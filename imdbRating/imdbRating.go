@@ -1,7 +1,5 @@
 package imdbRating
 
-// package main
-
 import (
 	"bms/model"
 	"encoding/json"
