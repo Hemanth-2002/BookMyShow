@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+option go_package = "examples/com/bms";
+
+package bms;
+
+service BmsDatabaseCrud{
+    rpc CreateUser(NewUser) returns (User){}
+    rpc AddMovie(NewMovie) returns (Movie){}
+    rpc AddBooking(NewBooking) returns (Booking){}
+    rpc AddPayment(NewPayment) returns (Payment){}
+    rpc GetMovies(EmptyMovie) returns (Movies){}
+    rpc GetMovieByPreference(MoviePreference) returns (Movies){}
+    rpc GetListOfShowsByTheatre(Theatre) returns (Shows){}
+    rpc GetListOfBookingsByUser(User) returns (Bookings){}
+}
+ 
+message User {
+    uint64 id = 1;
+    string user_name = 2;
+    string password = 3;
+    string email = 4;
+    string phone_number = 5;
+}
+
+message NewUser {
+    string user_name = 1;
+    string password = 2;
+    string email = 3;
+    string phone_number = 4;
+}
+
+message Movie {
+    uint64 id = 1;
+    string movie_name = 2;
+    string director = 3;
+    string description = 4;
+    uint64 rating = 5;
+    string language = 6;
+    string genre = 7;
+    string release_date = 8;
+    string status = 9;
+}
+
+message NewMovie {
+    string movie_name = 1;
+    string director = 2;
+    string description = 3;
+    uint64 rating = 4;
+    string language = 5;
+    string genre = 6;
+    string release_date = 7;
+    string status = 8; 
+}
+
+message EmptyMovie {
+}
+
+message MoviePreference {
+    string language = 1;
+    uint64 rating = 2;
+    string genre = 3;
+}
+
+
+message Movies {
+    repeated Movie movies = 1;
+}
+
+message Booking {
+    uint64 id = 1;
+    uint64 user_id = 2;
+    uint64 show_id = 3;
+    uint64 amount = 4;
+}
+
+message Bookings {
+    repeated Booking bookings = 1;
+}
+
+message NewBooking {
+    uint64 user_id = 1;
+    uint64 show_id = 2;
+    uint64 amount = 3;
+}
+
+message Payment {
+    uint64 id = 1;
+    uint64 amount = 2;
+    uint64 discount_coupon_id = 3;
+    string mode = 4;
+    bool status = 5;
+    uint64 booking_id = 6;
+}
+
+message NewPayment {
+    uint64 amount = 1;
+    uint64 discount_coupon_id = 2;
+    string mode = 3;
+    bool status = 4;
+    uint64 booking_id = 5;
+}
+
+message Theatre {
+    uint64 theatre_id = 1;
+}
+
+message Show {
+    uint64 id = 1;
+    string date = 2;
+    string start_time = 3;
+    string end_time = 4;
+    uint64 movie_id = 5;
+    uint64 theatre_id = 6;
+}
+
+message Shows {
+    repeated Show shows = 1;
+}
