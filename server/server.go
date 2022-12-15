@@ -2,6 +2,7 @@ package main
 
 import (
 	pb "bms/bmsproto"
+	imdb "bms/imdbRating"
 	model "bms/model"
 	"context"
 	"log"
@@ -40,7 +41,7 @@ func (s *BmsServer) AddMovie(ctx context.Context, in *pb.NewMovie) (*pb.Movie, e
 		MovieName:   in.GetMovieName(),
 		Director:    in.GetDirector(),
 		Description: in.GetDescription(),
-		Rating:      int(in.GetRating()),
+		Rating:      imdb.ImdbRating(in.GetMovieName()),
 		Language:    in.GetLanguage(),
 		Genre:       in.GetGenre(),
 		ReleaseDate: in.GetReleaseDate(),
@@ -51,7 +52,7 @@ func (s *BmsServer) AddMovie(ctx context.Context, in *pb.NewMovie) (*pb.Movie, e
 		MovieName:   in.GetMovieName(),
 		Director:    in.GetDirector(),
 		Description: in.GetDescription(),
-		Rating:      uint64(in.GetRating()),
+		Rating:      uint64(imdb.ImdbRating(in.GetMovieName())),
 		Language:    in.GetLanguage(),
 		Genre:       in.GetGenre(),
 		ReleaseDate: in.GetReleaseDate(),
