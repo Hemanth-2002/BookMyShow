@@ -187,6 +187,15 @@ func (s *BmsServer) UpdateMovieStatus(ctx context.Context, in *pb.Movie) (*pb.Mo
 	return &pb.Movie{Status: in.GetStatus()}, nil
 }
 
+// function to update show details on server
+func (s *BmsServer) UpdateShowDetails(ctx context.Context, in *pb.Show) (*pb.Show, error) {
+	log.Printf("update show details called")
+	s.Db.Model(&model.Show{}).Where("id=?", in.Id).Updates(model.Show{
+		MovieID: int(in.GetMovieId()),
+	})
+	return &pb.Show{Date: in.GetDate(), MovieId: in.GetMovieId()}, nil
+}
+
 func main() {
 	model.StartDB()
 	listen, err := net.Listen("tcp", port)
