@@ -31,6 +31,7 @@ type BmsDatabaseCrudClient interface {
 	GetListOfShowsByTheatre(ctx context.Context, in *Theatre, opts ...grpc.CallOption) (*Shows, error)
 	GetListOfBookingsByUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*Bookings, error)
 	UpdateUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
+	UpdateMovieStatus(ctx context.Context, in *Movie, opts ...grpc.CallOption) (*Movie, error)
 }
 
 type bmsDatabaseCrudClient struct {
@@ -122,6 +123,15 @@ func (c *bmsDatabaseCrudClient) UpdateUser(ctx context.Context, in *User, opts .
 	return out, nil
 }
 
+func (c *bmsDatabaseCrudClient) UpdateMovieStatus(ctx context.Context, in *Movie, opts ...grpc.CallOption) (*Movie, error) {
+	out := new(Movie)
+	err := c.cc.Invoke(ctx, "/bms.BmsDatabaseCrud/UpdateMovieStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BmsDatabaseCrudServer is the server API for BmsDatabaseCrud service.
 // All implementations must embed UnimplementedBmsDatabaseCrudServer
 // for forward compatibility
@@ -135,6 +145,7 @@ type BmsDatabaseCrudServer interface {
 	GetListOfShowsByTheatre(context.Context, *Theatre) (*Shows, error)
 	GetListOfBookingsByUser(context.Context, *User) (*Bookings, error)
 	UpdateUser(context.Context, *User) (*User, error)
+	UpdateMovieStatus(context.Context, *Movie) (*Movie, error)
 	mustEmbedUnimplementedBmsDatabaseCrudServer()
 }
 
@@ -168,6 +179,9 @@ func (UnimplementedBmsDatabaseCrudServer) GetListOfBookingsByUser(context.Contex
 }
 func (UnimplementedBmsDatabaseCrudServer) UpdateUser(context.Context, *User) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
+}
+func (UnimplementedBmsDatabaseCrudServer) UpdateMovieStatus(context.Context, *Movie) (*Movie, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMovieStatus not implemented")
 }
 func (UnimplementedBmsDatabaseCrudServer) mustEmbedUnimplementedBmsDatabaseCrudServer() {}
 
@@ -344,6 +358,24 @@ func _BmsDatabaseCrud_UpdateUser_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BmsDatabaseCrud_UpdateMovieStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Movie)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BmsDatabaseCrudServer).UpdateMovieStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/bms.BmsDatabaseCrud/UpdateMovieStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BmsDatabaseCrudServer).UpdateMovieStatus(ctx, req.(*Movie))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BmsDatabaseCrud_ServiceDesc is the grpc.ServiceDesc for BmsDatabaseCrud service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -386,6 +418,10 @@ var BmsDatabaseCrud_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateUser",
 			Handler:    _BmsDatabaseCrud_UpdateUser_Handler,
+		},
+		{
+			MethodName: "UpdateMovieStatus",
+			Handler:    _BmsDatabaseCrud_UpdateMovieStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

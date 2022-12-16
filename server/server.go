@@ -178,6 +178,15 @@ func (s *BmsServer) UpdateUser(ctx context.Context, in *pb.User) (*pb.User, erro
 	return &pb.User{UserName: in.GetUserName(), Password: in.GetPassword(), Email: in.GetEmail(), PhoneNumber: in.GetPhoneNumber()}, nil
 }
 
+// function to update movie status on server
+func (s *BmsServer) UpdateMovieStatus(ctx context.Context, in *pb.Movie) (*pb.Movie, error) {
+	log.Printf("update movie status called")
+	s.Db.Model(&model.Movie{}).Where("id=?", in.Id).Updates(model.Movie{
+		Status: in.GetStatus(),
+	})
+	return &pb.Movie{Status: in.GetStatus()}, nil
+}
+
 func main() {
 	model.StartDB()
 	listen, err := net.Listen("tcp", port)

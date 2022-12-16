@@ -14,6 +14,7 @@ service BmsDatabaseCrud{
     rpc GetListOfShowsByTheatre(Theatre) returns (Shows){}
     rpc GetListOfBookingsByUser(User) returns (Bookings){}
     rpc UpdateUser(User) returns (User){}
+    rpc UpdateMovieStatus(Movie) returns (Movie){}
 }
  
 message User {

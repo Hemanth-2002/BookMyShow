@@ -112,4 +112,8 @@ func main() {
 	model.CheckError(err)
 	fmt.Println(updated_user)
 
+	// updating movie status
+	updatedMovieStatus, err := client.UpdateMovieStatus(ctx, &pb.Movie{Id: 3, Status: "Active"})
+	model.CheckError(err)
+	fmt.Println(updatedMovieStatus)
 }
