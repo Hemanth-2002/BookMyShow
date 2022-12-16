@@ -13,6 +13,7 @@ service BmsDatabaseCrud{
     rpc GetMovieByPreference(MoviePreference) returns (Movies){}
     rpc GetListOfShowsByTheatre(Theatre) returns (Shows){}
     rpc GetListOfBookingsByUser(User) returns (Bookings){}
+    rpc UpdateUser(User) returns (User){}
 }
  
 message User {

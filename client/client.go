@@ -107,4 +107,9 @@ func main() {
 		fmt.Println(booking.GetUserId(), booking.GetShowId(), booking.GetAmount())
 	}
 
+	// updating user info
+	updated_user, err := client.UpdateUser(ctx, &pb.User{Password: "newPwd", PhoneNumber: "456", UserName: "GST", Id: 3})
+	model.CheckError(err)
+	fmt.Println(updated_user)
+
 }

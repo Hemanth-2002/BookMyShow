@@ -167,6 +167,17 @@ func (s *BmsServer) GetListOfBookingsByUser(ctx context.Context, in *pb.User) (*
 	return &pb.Bookings{Bookings: AllBookings}, nil
 }
 
+// function to update user info on server
+func (s *BmsServer) UpdateUser(ctx context.Context, in *pb.User) (*pb.User, error) {
+	log.Printf("update user info called")
+	s.Db.Model(&model.User{}).Where("id=?", in.Id).Updates(model.User{
+		Password:    in.GetPassword(),
+		Email:       in.GetEmail(),
+		PhoneNumber: in.GetPhoneNumber(),
+	})
+	return &pb.User{UserName: in.GetUserName(), Password: in.GetPassword(), Email: in.GetEmail(), PhoneNumber: in.GetPhoneNumber()}, nil
+}
+
 func main() {
 	model.StartDB()
 	listen, err := net.Listen("tcp", port)
