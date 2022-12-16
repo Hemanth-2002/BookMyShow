@@ -16,6 +16,7 @@ service BmsDatabaseCrud{
     rpc UpdateUser(User) returns (User){}
     rpc UpdateMovieStatus(Movie) returns (Movie){}
     rpc UpdateShowDetails(Show) returns (Show){}
+    rpc CancelBooking(Booking) returns (Booking){}
 }
  
 message User {

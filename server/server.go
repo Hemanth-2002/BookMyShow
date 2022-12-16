@@ -196,6 +196,13 @@ func (s *BmsServer) UpdateShowDetails(ctx context.Context, in *pb.Show) (*pb.Sho
 	return &pb.Show{Date: in.GetDate(), MovieId: in.GetMovieId()}, nil
 }
 
+// function to cancel booking on server
+func (s *BmsServer) CancelBooking(ctx context.Context, in *pb.Booking) (*pb.Booking, error) {
+	log.Printf("cancel booking called")
+	s.Db.Model(&model.Booking{}).Where("id=?", in.Id).Delete(&model.Booking{})
+	return &pb.Booking{Id: in.GetId()}, nil
+}
+
 func main() {
 	model.StartDB()
 	listen, err := net.Listen("tcp", port)

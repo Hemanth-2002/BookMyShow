@@ -122,4 +122,8 @@ func main() {
 	model.CheckError(err)
 	fmt.Println(updatedShowDetails)
 
+	//  deleting booking
+	cancelledBooking, err := client.CancelBooking(ctx, &pb.Booking{Id: 3})
+	model.CheckError(err)
+	fmt.Println(cancelledBooking)
 }
