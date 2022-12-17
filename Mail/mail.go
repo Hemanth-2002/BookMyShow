@@ -10,7 +10,6 @@ import (
 // func main() {
 func Mail(amount string, email string, coupon string, mode string) {
 	url := "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send"
-	fmt.Println(email)
 	code := fmt.Sprintf(`{
 	    "personalizations": [
 	        {
