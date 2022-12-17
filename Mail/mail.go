@@ -1,5 +1,4 @@
-// package main
-package mail
+package Mail
 
 import (
 	"bms/model"
