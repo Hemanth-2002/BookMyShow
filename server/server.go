@@ -74,6 +74,17 @@ func (s *BmsServer) AddBooking(ctx context.Context, in *pb.NewBooking) (*pb.Book
 	return &pb.Booking{UserId: in.GetUserId(), ShowId: in.GetShowId(), Amount: in.GetAmount(), Id: uint64(newBooking.ID)}, nil
 }
 
+// function to add seats to booking on server
+func (s *BmsServer) AddSeat(ctx context.Context, in *pb.NewSeat) (*pb.Seat, error) {
+	log.Printf("adding seat called")
+	newSeat := model.Seat{
+		BookingID:  int(in.GetBookingId()),
+		SeatNumber: int(in.GetSeatNumber()),
+	}
+	s.Db.Save(&newSeat)
+	return &pb.Seat{BookingId: in.GetBookingId(), SeatNumber: in.GetSeatNumber(), Id: uint64(newSeat.ID)}, nil
+}
+
 // function to add payment for a booking
 func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Payment, error) {
 	log.Printf("creating new payment called")

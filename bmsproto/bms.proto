@@ -17,6 +17,7 @@ service BmsDatabaseCrud{
     rpc UpdateMovieStatus(Movie) returns (Movie){}
     rpc UpdateShowDetails(Show) returns (Show){}
     rpc CancelBooking(Booking) returns (Booking){}
+    rpc AddSeat(NewSeat) returns(Seat){}
 }
  
 message User {
@@ -120,4 +121,15 @@ message Show {
 
 message Shows {
     repeated Show shows = 1;
+}
+
+message Seat {
+    uint64 id = 1;
+    uint64 seat_number = 2;
+    uint64 booking_id = 3;
+}
+
+message NewSeat {
+    uint64 seat_number = 1;
+    uint64 booking_id = 2;
 }

@@ -57,6 +57,14 @@ func main() {
 
 	log.Printf("User Id: %v, Show Id: %v, Amount: %v", new_booking.GetUserId(), new_booking.GetShowId(), new_booking.GetAmount())
 
+	new_seat, err := client.AddSeat(ctx, &pb.NewSeat{
+		BookingId:  1,
+		SeatNumber: 2,
+	})
+	model.CheckError(err)
+
+	log.Printf("Booking Id: %v, Seat Number %v", new_seat.GetBookingId(), new_seat.GetSeatNumber())
+
 	// creating a new payment
 	new_payment, err := client.AddPayment(ctx, &pb.NewPayment{
 		Amount:    150,
