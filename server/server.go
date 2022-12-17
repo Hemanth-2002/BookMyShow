@@ -1,9 +1,9 @@
 package main
 
 import (
-	mail "bms/Mail"
 	pb "bms/bmsproto"
 	imdb "bms/imdbRating"
+	mail "bms/mail"
 	model "bms/model"
 	"context"
 	"fmt"
