@@ -71,6 +71,15 @@ func StartDB() {
 	// 	Mode:             "Upi",
 	// 	Status:           true,
 	// 	BookingID:        1,
+	// 	UserID:           1,
+	// })
+
+	// db.Save(&Payment{
+	// 	Amount:    150,
+	// 	Mode:      "Credit-card",
+	// 	Status:    true,
+	// 	BookingID: 2,
+	// 	UserID:    2,
 	// })
 
 	// db.Save(&Seat{
@@ -158,4 +167,5 @@ type Payment struct {
 	Mode             string
 	Status           bool
 	BookingID        int
+	UserID           int
 }
