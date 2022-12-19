@@ -6,14 +6,7 @@ import (
 	"bms/model"
 	"context"
 	"log"
-
-	"github.com/jinzhu/gorm"
 )
-
-type BmsServer struct {
-	pb.UnimplementedBmsDatabaseCrudServer
-	Db *gorm.DB
-}
 
 // function to add new movie on server
 func (s *BmsServer) AddMovie(ctx context.Context, in *pb.NewMovie) (*pb.Movie, error) {

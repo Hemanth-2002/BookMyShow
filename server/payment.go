@@ -7,14 +7,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-
-	"github.com/jinzhu/gorm"
 )
-
-type BmsServer struct {
-	pb.UnimplementedBmsDatabaseCrudServer
-	Db *gorm.DB
-}
 
 // function to add payment for a booking
 func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Payment, error) {

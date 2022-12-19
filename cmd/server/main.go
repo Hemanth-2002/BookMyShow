@@ -3,9 +3,8 @@ package main
 import (
 	pb "bms/bmsproto"
 	"bms/model"
-	server "bms/server/payment"
+	server "bms/server"
 	"context"
-	"fmt"
 	"log"
 	"net"
 
@@ -23,7 +22,7 @@ type BmsServer struct {
 }
 
 func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
-	fmt.Println("Unary Interceptor called: ", info.FullMethod)
+	log.Println("Unary Interceptor called: ", info.FullMethod)
 	return handler(ctx, req)
 }
 
@@ -46,6 +45,7 @@ func main() {
 	new_server := grpc.NewServer(
 		grpc.UnaryInterceptor(unaryInterceptor),
 	)
+
 	pb.RegisterBmsDatabaseCrudServer(new_server, &server.BmsServer{
 		Db: db,
 	})

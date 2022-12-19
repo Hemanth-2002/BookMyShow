@@ -5,14 +5,7 @@ import (
 	"bms/model"
 	"context"
 	"log"
-
-	"github.com/jinzhu/gorm"
 )
-
-type BmsServer struct {
-	pb.UnimplementedBmsDatabaseCrudServer
-	Db *gorm.DB
-}
 
 // function to add new user on server
 func (s *BmsServer) CreateUser(ctx context.Context, in *pb.NewUser) (*pb.User, error) {

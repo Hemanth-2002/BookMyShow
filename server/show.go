@@ -5,14 +5,7 @@ import (
 	model "bms/model"
 	"context"
 	"log"
-
-	"github.com/jinzhu/gorm"
 )
-
-type BmsServer struct {
-	pb.UnimplementedBmsDatabaseCrudServer
-	Db *gorm.DB
-}
 
 // function to get list of shows by theatre
 func (s *BmsServer) GetListOfShowsByTheatre(ctx context.Context, in *pb.Theatre) (*pb.Shows, error) {
