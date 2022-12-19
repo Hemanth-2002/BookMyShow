@@ -31,7 +31,7 @@ func Mail(amount string, email string, coupon string, mode string) {
 			}
 	    ]
 	}`, email)
-	fmt.Println(code)
+	// fmt.Println(code)
 
 	payload := strings.NewReader(code)
 	req, _ := http.NewRequest("POST", url, payload)
