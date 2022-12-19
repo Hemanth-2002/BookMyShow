@@ -16,11 +16,6 @@ const (
 	port = ":50051" // choosing port number
 )
 
-type BmsServer struct {
-	pb.UnimplementedBmsDatabaseCrudServer
-	Db *gorm.DB
-}
-
 func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 	log.Println("Unary Interceptor called: ", info.FullMethod)
 	return handler(ctx, req)
