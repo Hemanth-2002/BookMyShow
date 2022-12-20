@@ -20,6 +20,8 @@ service BmsDatabaseCrud{
     rpc AddSeat(NewSeat) returns(Seat){}
 }
  
+// User
+
 message User {
     uint64 id = 1;
     string user_name = 2;
@@ -34,6 +36,8 @@ message NewUser {
     string email = 3;
     string phone_number = 4;
 }
+
+// Movie
 
 message Movie {
     uint64 id = 1;
@@ -71,6 +75,9 @@ message Movies {
     repeated Movie movies = 1;
 }
 
+
+// Booking
+
 message Booking {
     uint64 id = 1;
     uint64 user_id = 2;
@@ -88,6 +95,8 @@ message NewBooking {
     uint64 amount = 3;
 }
 
+
+// Payment
 message Payment {
     uint64 id = 1;
     uint64 amount = 2;
@@ -106,9 +115,14 @@ message NewPayment {
     uint64 user_id = 6;
 }
 
+// Theatre
+
 message Theatre {
     uint64 theatre_id = 1;
 }
+
+
+// Show
 
 message Show {
     uint64 id = 1;
@@ -122,6 +136,9 @@ message Show {
 message Shows {
     repeated Show shows = 1;
 }
+
+
+// Seat
 
 message Seat {
     uint64 id = 1;

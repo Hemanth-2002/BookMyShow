@@ -2,16 +2,10 @@ package server
 
 import (
 	pb "bms/bmsproto"
-	"bms/database"
 	model "bms/model"
 	"context"
 	"log"
 )
-
-type BmsServer struct {
-	pb.UnimplementedBmsDatabaseCrudServer
-	Db database.DataBase
-}
 
 // function to add new booking on server
 func (s *BmsServer) AddBooking(ctx context.Context, in *pb.NewBooking) (*pb.Booking, error) {

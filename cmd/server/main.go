@@ -9,7 +9,6 @@ import (
 	"log"
 	"net"
 
-	"github.com/jinzhu/gorm"
 	"google.golang.org/grpc"
 )
 
@@ -23,18 +22,13 @@ func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServ
 }
 
 func main() {
-	model.StartDB()
+
+	// db connection
+	db, err := model.StartDB()
+	model.CheckError(err)
+
 	listen, err := net.Listen("tcp", port)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	//db connection
-	db, err := gorm.Open("postgres", "user=postgres password=MohanNeelima@01 dbname=BookMyShow sslmode=disable")
-	if err != nil {
-		panic(err.Error())
-	}
-
+	model.CheckError(err)
 	defer db.Close()
 
 	//create new server
