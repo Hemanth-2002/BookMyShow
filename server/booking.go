@@ -2,16 +2,15 @@ package server
 
 import (
 	pb "bms/bmsproto"
+	"bms/database"
 	model "bms/model"
 	"context"
 	"log"
-
-	"github.com/jinzhu/gorm"
 )
 
 type BmsServer struct {
 	pb.UnimplementedBmsDatabaseCrudServer
-	Db *gorm.DB
+	Db database.DataBase
 }
 
 // function to add new booking on server
@@ -22,7 +21,7 @@ func (s *BmsServer) AddBooking(ctx context.Context, in *pb.NewBooking) (*pb.Book
 		ShowID: int(in.GetShowId()),
 		Amount: int(in.GetAmount()),
 	}
-	s.Db.Save(&newBooking)
+	s.Db.AddBooking(newBooking)
 	return &pb.Booking{UserId: in.GetUserId(), ShowId: in.GetShowId(), Amount: in.GetAmount(), Id: uint64(newBooking.ID)}, nil
 }
 
@@ -32,7 +31,8 @@ func (s *BmsServer) GetListOfBookingsByUser(ctx context.Context, in *pb.User) (*
 	Bookings := []model.Booking{}
 	AllBookings := []*pb.Booking{}
 	UserId := in.GetId()
-	s.Db.Where(&model.Booking{UserID: int(UserId)}).Find(&Bookings)
+	Booking := &model.Booking{UserID: int(UserId)}
+	s.Db.GetBookings(*Booking)
 	for _, booking := range Bookings {
 		AllBookings = append(AllBookings, &pb.Booking{
 			UserId: uint64(booking.UserID),
@@ -46,6 +46,7 @@ func (s *BmsServer) GetListOfBookingsByUser(ctx context.Context, in *pb.User) (*
 // function to cancel booking on server
 func (s *BmsServer) CancelBooking(ctx context.Context, in *pb.Booking) (*pb.Booking, error) {
 	log.Printf("cancel booking called")
-	s.Db.Model(&model.Booking{}).Where("id=?", in.Id).Delete(&model.Booking{})
+	BookingId := in.Id
+	s.Db.CancelBooking(int(BookingId))
 	return &pb.Booking{Id: in.GetId()}, nil
 }

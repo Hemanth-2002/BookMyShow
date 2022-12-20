@@ -57,6 +57,7 @@ func main() {
 
 	log.Printf("User Id: %v, Show Id: %v, Amount: %v", new_booking.GetUserId(), new_booking.GetShowId(), new_booking.GetAmount())
 
+	//adding seat to booking
 	new_seat, err := client.AddSeat(ctx, &pb.NewSeat{
 		BookingId:  1,
 		SeatNumber: 2,
@@ -71,6 +72,7 @@ func main() {
 		Mode:      "credit-card",
 		Status:    true,
 		BookingId: 2,
+		UserId:    1,
 	})
 	model.CheckError(err)
 

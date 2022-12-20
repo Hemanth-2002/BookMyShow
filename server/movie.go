@@ -21,7 +21,7 @@ func (s *BmsServer) AddMovie(ctx context.Context, in *pb.NewMovie) (*pb.Movie, e
 		ReleaseDate: in.GetReleaseDate(),
 		Status:      in.GetStatus(),
 	}
-	s.Db.Save(&newMovie)
+	s.Db.AddMovie(newMovie)
 	return &pb.Movie{
 		MovieName:   in.GetMovieName(),
 		Director:    in.GetDirector(),
@@ -37,9 +37,8 @@ func (s *BmsServer) AddMovie(ctx context.Context, in *pb.NewMovie) (*pb.Movie, e
 // function to get all movies on server
 func (s *BmsServer) GetMovies(ctx context.Context, in *pb.EmptyMovie) (*pb.Movies, error) {
 	log.Printf("Getting employees called")
-	Movies := []model.Movie{}
 	AllMovies := []*pb.Movie{}
-	s.Db.Find(&Movies)
+	Movies := s.Db.GetMovies()
 	for _, movie := range Movies {
 		AllMovies = append(AllMovies, &pb.Movie{
 			MovieName:   movie.MovieName,
@@ -58,12 +57,12 @@ func (s *BmsServer) GetMovies(ctx context.Context, in *pb.EmptyMovie) (*pb.Movie
 // function to get movie by preference (rating,language,genre)
 func (s *BmsServer) GetMovieByPreference(ctx context.Context, in *pb.MoviePreference) (*pb.Movies, error) {
 	log.Printf("Getting movie by preference called")
-	Movies := []model.Movie{}
 	AllMovies := []*pb.Movie{}
 	language := in.GetLanguage()
 	rating := in.GetRating()
 	genre := in.GetGenre()
-	s.Db.Where(&model.Movie{Language: language, Rating: int(rating), Genre: genre}).Find(&Movies)
+	movie := model.Movie{Language: language, Rating: int(rating), Genre: genre}
+	Movies := s.Db.GetMovie(movie)
 	for _, movie := range Movies {
 		AllMovies = append(AllMovies, &pb.Movie{
 			MovieName:   movie.MovieName,
@@ -82,8 +81,9 @@ func (s *BmsServer) GetMovieByPreference(ctx context.Context, in *pb.MoviePrefer
 // function to update movie status on server
 func (s *BmsServer) UpdateMovieStatus(ctx context.Context, in *pb.Movie) (*pb.Movie, error) {
 	log.Printf("update movie status called")
-	s.Db.Model(&model.Movie{}).Where("id=?", in.Id).Updates(model.Movie{
+	updatedStatus := model.Movie{
 		Status: in.GetStatus(),
-	})
+	}
+	s.Db.UpdateMovie(int(in.Id), updatedStatus)
 	return &pb.Movie{Status: in.GetStatus()}, nil
 }

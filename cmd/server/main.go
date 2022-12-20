@@ -2,6 +2,7 @@ package main
 
 import (
 	pb "bms/bmsproto"
+	"bms/database"
 	"bms/model"
 	server "bms/server"
 	"context"
@@ -42,7 +43,7 @@ func main() {
 	)
 
 	pb.RegisterBmsDatabaseCrudServer(new_server, &server.BmsServer{
-		Db: db,
+		Db: database.DBClient{Db: db},
 	})
 
 	log.Printf("Using port no %v", listen.Addr())

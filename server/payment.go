@@ -13,7 +13,7 @@ import (
 func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Payment, error) {
 	log.Printf("creating new payment called")
 	status := in.GetStatus()
-	NewPayment := model.Payment{
+	newPayment := model.Payment{
 		BookingID:        int(in.GetBookingId()),
 		Amount:           int(in.GetAmount()),
 		DiscountCouponID: int(in.GetDiscountCouponId()),
@@ -21,13 +21,13 @@ func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Paym
 		Status:           status,
 		UserID:           int(in.GetUserId()),
 	}
-	s.Db.Save(&NewPayment)
-	user := &model.User{}
-	s.Db.Where("id = ?", in.GetUserId()).Find(&user)
+	userId := in.GetUserId()
+
+	user := s.Db.AddPayment(newPayment, int(userId))
 
 	if status {
 		mail.Mail(fmt.Sprint(in.GetAmount()), user.Email, fmt.Sprint(in.GetDiscountCouponId()), in.GetMode())
 	}
 
-	return &pb.Payment{Amount: in.GetAmount(), DiscountCouponId: in.GetDiscountCouponId(), Mode: in.GetMode(), Status: in.GetStatus(), Id: uint64(NewPayment.ID)}, nil
+	return &pb.Payment{Amount: in.GetAmount(), DiscountCouponId: in.GetDiscountCouponId(), Mode: in.GetMode(), Status: in.GetStatus(), Id: uint64(newPayment.ID)}, nil
 }

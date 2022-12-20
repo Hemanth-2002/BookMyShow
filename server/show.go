@@ -10,10 +10,9 @@ import (
 // function to get list of shows by theatre
 func (s *BmsServer) GetListOfShowsByTheatre(ctx context.Context, in *pb.Theatre) (*pb.Shows, error) {
 	log.Printf("Getting list of shows by theatre called")
-	Shows := []model.Show{}
 	AllShows := []*pb.Show{}
 	TheatreId := in.GetTheatreId()
-	s.Db.Where(&model.Show{TheatreID: int(TheatreId)}).Find(&Shows)
+	Shows := s.Db.GetShow(int(TheatreId))
 	for _, show := range Shows {
 		AllShows = append(AllShows, &pb.Show{
 			Date:      show.Date,
@@ -29,8 +28,9 @@ func (s *BmsServer) GetListOfShowsByTheatre(ctx context.Context, in *pb.Theatre)
 // function to update show details on server
 func (s *BmsServer) UpdateShowDetails(ctx context.Context, in *pb.Show) (*pb.Show, error) {
 	log.Printf("update show details called")
-	s.Db.Model(&model.Show{}).Where("id=?", in.Id).Updates(model.Show{
+	Show := model.Show{
 		MovieID: int(in.GetMovieId()),
-	})
+	}
+	s.Db.UpdateShow(int(in.Id), Show)
 	return &pb.Show{Date: in.GetDate(), MovieId: in.GetMovieId()}, nil
 }
