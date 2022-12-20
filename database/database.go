@@ -8,15 +8,15 @@ import (
 
 type DataBase interface {
 	CreateUser(model.User)
-	UpdateUser(int, model.User)
+	UpdateUser(model.User)
 	GetShow(int) []model.Show
 	UpdateShow(int, model.Show)
 	AddSeat(model.Seat)
 	AddPayment(model.Payment, int) model.User
 	AddMovie(model.Movie)
 	GetMovies() []model.Movie
-	GetMovie(model.Movie) []model.Movie
-	UpdateMovie(int, model.Movie)
+	GetMovie(model.MoviePreference) []model.Movie
+	UpdateMovie(model.Movie)
 	AddBooking(model.Booking)
 	GetBookings(model.Booking) []model.Booking
 	CancelBooking(int)
@@ -30,8 +30,8 @@ func (db DBClient) CreateUser(user model.User) {
 	db.Db.Save(&user)
 }
 
-func (db DBClient) UpdateUser(userID int, user model.User) {
-	db.Db.Model(&model.User{}).Where("id=?", userID).Updates(&user)
+func (db DBClient) UpdateUser(user model.User) {
+	db.Db.Save(&user)
 }
 
 func (db DBClient) GetShow(theatreId int) []model.Show {
@@ -65,14 +65,14 @@ func (db DBClient) GetMovies() []model.Movie {
 	return Movies
 }
 
-func (db DBClient) GetMovie(movie model.Movie) []model.Movie {
+func (db DBClient) GetMovie(movie model.MoviePreference) []model.Movie {
 	Movies := []model.Movie{}
 	db.Db.Where(movie).Find(&Movies)
 	return Movies
 }
 
-func (db DBClient) UpdateMovie(movieId int, movie model.Movie) {
-	db.Db.Model(&model.User{}).Where("id=?", movieId).Updates(&movie)
+func (db DBClient) UpdateMovie(movie model.Movie) {
+	db.Db.Save(&movie)
 }
 
 func (db DBClient) AddBooking(booking model.Booking) {

@@ -15,23 +15,39 @@ func (s *BmsServer) AddMovie(ctx context.Context, in *pb.NewMovie) (*pb.Movie, e
 		MovieName:   in.GetMovieName(),
 		Director:    in.GetDirector(),
 		Description: in.GetDescription(),
-		Rating:      imdb.ImdbRating(in.GetMovieName()),
 		Language:    in.GetLanguage(),
 		Genre:       in.GetGenre(),
 		ReleaseDate: in.GetReleaseDate(),
 		Status:      in.GetStatus(),
 	}
-	s.Db.AddMovie(newMovie)
-	return &pb.Movie{
-		MovieName:   in.GetMovieName(),
-		Director:    in.GetDirector(),
-		Description: in.GetDescription(),
-		Rating:      uint64(imdb.ImdbRating(in.GetMovieName())),
-		Language:    in.GetLanguage(),
-		Genre:       in.GetGenre(),
-		ReleaseDate: in.GetReleaseDate(),
-		Status:      in.GetStatus(),
-		Id:          uint64(newMovie.ID)}, nil
+	//  if no rating is given then rating is fetched using public api else the given rating is taken
+	if in.GetRating() == 0 {
+		newMovie.Rating = imdb.ImdbRating(in.GetMovieName())
+		s.Db.AddMovie(newMovie)
+		return &pb.Movie{
+			MovieName:   in.GetMovieName(),
+			Director:    in.GetDirector(),
+			Description: in.GetDescription(),
+			Rating:      uint64(imdb.ImdbRating(in.GetMovieName())),
+			Language:    in.GetLanguage(),
+			Genre:       in.GetGenre(),
+			ReleaseDate: in.GetReleaseDate(),
+			Status:      in.GetStatus(),
+			Id:          uint64(newMovie.ID)}, nil
+	} else {
+		newMovie.Rating = int(in.GetRating())
+		s.Db.AddMovie(newMovie)
+		return &pb.Movie{
+			MovieName:   in.GetMovieName(),
+			Director:    in.GetDirector(),
+			Description: in.GetDescription(),
+			Rating:      in.Rating,
+			Language:    in.GetLanguage(),
+			Genre:       in.GetGenre(),
+			ReleaseDate: in.GetReleaseDate(),
+			Status:      in.GetStatus(),
+			Id:          uint64(newMovie.ID)}, nil
+	}
 }
 
 // function to get all movies on server
@@ -61,7 +77,7 @@ func (s *BmsServer) GetMovieByPreference(ctx context.Context, in *pb.MoviePrefer
 	language := in.GetLanguage()
 	rating := in.GetRating()
 	genre := in.GetGenre()
-	movie := model.Movie{Language: language, Rating: int(rating), Genre: genre}
+	movie := model.MoviePreference{Language: language, Rating: int(rating), Genre: genre}
 	Movies := s.Db.GetMovie(movie)
 	for _, movie := range Movies {
 		AllMovies = append(AllMovies, &pb.Movie{
@@ -84,6 +100,7 @@ func (s *BmsServer) UpdateMovieStatus(ctx context.Context, in *pb.Movie) (*pb.Mo
 	updatedStatus := model.Movie{
 		Status: in.GetStatus(),
 	}
-	s.Db.UpdateMovie(int(in.Id), updatedStatus)
+	updatedStatus.ID = uint(in.Id)
+	s.Db.UpdateMovie(updatedStatus)
 	return &pb.Movie{Status: in.GetStatus()}, nil
 }

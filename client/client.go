@@ -34,7 +34,8 @@ func main() {
 	log.Printf("User Name: %v, Password: %v, Email: %v, PhoneNumber : %v", new_user.GetUserName(), new_user.GetPassword(), new_user.GetEmail(), new_user.GetPhoneNumber())
 
 	// creating a new movie
-	new_movie, err := client.AddMovie(ctx, &pb.NewMovie{MovieName: "Avatar",
+	new_movie, err := client.AddMovie(ctx, &pb.NewMovie{
+		MovieName:   "Avatar",
 		Director:    "Cameron",
 		Description: "Movie description ....",
 		Rating:      9,

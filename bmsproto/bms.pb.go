@@ -713,6 +713,7 @@ func (x *NewBooking) GetAmount() uint64 {
 	return 0
 }
 
+// Payment
 type Payment struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

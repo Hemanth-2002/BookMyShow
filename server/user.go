@@ -28,6 +28,7 @@ func (s *BmsServer) UpdateUser(ctx context.Context, in *pb.User) (*pb.User, erro
 		Email:       in.GetEmail(),
 		PhoneNumber: in.GetPhoneNumber(),
 	}
-	s.Db.UpdateUser(int(in.Id), updatedUser)
-	return &pb.User{UserName: in.GetUserName(), Password: in.GetPassword(), Email: in.GetEmail(), PhoneNumber: in.GetPhoneNumber()}, nil
+	updatedUser.ID = uint(in.Id)
+	s.Db.UpdateUser(updatedUser)
+	return &pb.User{Password: in.GetPassword(), Email: in.GetEmail(), PhoneNumber: in.GetPhoneNumber()}, nil
 }
