@@ -10,15 +10,15 @@ type DataBase interface {
 	CreateUser(model.User)
 	UpdateUser(model.User)
 	GetShow(int) []model.Show
-	UpdateShow(int, model.Show)
+	UpdateShow(model.Show)
 	AddSeat(model.Seat)
-	AddPayment(model.Payment, int) model.User
+	AddPayment(model.Payment) model.User
 	AddMovie(model.Movie)
 	GetMovies() []model.Movie
 	GetMovie(model.MoviePreference) []model.Movie
 	UpdateMovie(model.Movie)
 	AddBooking(model.Booking)
-	GetBookings(model.Booking) []model.Booking
+	GetBookings(int) []model.Booking
 	CancelBooking(int)
 }
 
@@ -40,19 +40,19 @@ func (db DBClient) GetShow(theatreId int) []model.Show {
 	return Shows
 }
 
-func (db DBClient) UpdateShow(showId int, show model.Show) {
-	db.Db.Model(&model.User{}).Where("id=?", showId).Updates(&show)
+func (db DBClient) UpdateShow(show model.Show) {
+	db.Db.Save(&show)
 }
 
 func (db DBClient) AddSeat(seat model.Seat) {
 	db.Db.Save(&seat)
 }
 
-func (db DBClient) AddPayment(payment model.Payment, userId int) model.User {
-	user := &model.User{}
+func (db DBClient) AddPayment(payment model.Payment) model.User {
+	user := model.User{}
 	db.Db.Save(&payment)
-	db.Db.Where("id = ?", userId).Find(&user)
-	return *user
+	db.Db.Where("id = ?", payment.UserID).Find(&user)
+	return user
 }
 
 func (db DBClient) AddMovie(movie model.Movie) {
@@ -79,12 +79,12 @@ func (db DBClient) AddBooking(booking model.Booking) {
 	db.Db.Save(&booking)
 }
 
-func (db DBClient) GetBookings(booking model.Booking) []model.Booking {
+func (db DBClient) GetBookings(userId int) []model.Booking {
 	Bookings := []model.Booking{}
-	db.Db.Where(booking).Find(&Bookings)
+	db.Db.Where("id = ?", userId).Find(&Bookings)
 	return Bookings
 }
 
-func (db DBClient) CancelBooking(userId int) {
-	db.Db.Model(&model.Booking{}).Where("id=?", userId).Delete(&model.Booking{})
+func (db DBClient) CancelBooking(bookingId int) {
+	db.Db.Model(&model.Booking{}).Where("id=?", bookingId).Delete(&model.Booking{})
 }

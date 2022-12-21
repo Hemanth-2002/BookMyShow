@@ -59,17 +59,17 @@ func (mr *MockDataBaseMockRecorder) AddMovie(arg0 interface{}) *gomock.Call {
 }
 
 // AddPayment mocks base method.
-func (m *MockDataBase) AddPayment(arg0 model.Payment, arg1 int) model.User {
+func (m *MockDataBase) AddPayment(arg0 model.Payment) model.User {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AddPayment", arg0, arg1)
+	ret := m.ctrl.Call(m, "AddPayment", arg0)
 	ret0, _ := ret[0].(model.User)
 	return ret0
 }
 
 // AddPayment indicates an expected call of AddPayment.
-func (mr *MockDataBaseMockRecorder) AddPayment(arg0, arg1 interface{}) *gomock.Call {
+func (mr *MockDataBaseMockRecorder) AddPayment(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddPayment", reflect.TypeOf((*MockDataBase)(nil).AddPayment), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddPayment", reflect.TypeOf((*MockDataBase)(nil).AddPayment), arg0)
 }
 
 // AddSeat mocks base method.
@@ -109,7 +109,7 @@ func (mr *MockDataBaseMockRecorder) CreateUser(arg0 interface{}) *gomock.Call {
 }
 
 // GetBookings mocks base method.
-func (m *MockDataBase) GetBookings(arg0 model.Booking) []model.Booking {
+func (m *MockDataBase) GetBookings(arg0 int) []model.Booking {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBookings", arg0)
 	ret0, _ := ret[0].([]model.Booking)
@@ -177,15 +177,15 @@ func (mr *MockDataBaseMockRecorder) UpdateMovie(arg0 interface{}) *gomock.Call {
 }
 
 // UpdateShow mocks base method.
-func (m *MockDataBase) UpdateShow(arg0 int, arg1 model.Show) {
+func (m *MockDataBase) UpdateShow(arg0 model.Show) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "UpdateShow", arg0, arg1)
+	m.ctrl.Call(m, "UpdateShow", arg0)
 }
 
 // UpdateShow indicates an expected call of UpdateShow.
-func (mr *MockDataBaseMockRecorder) UpdateShow(arg0, arg1 interface{}) *gomock.Call {
+func (mr *MockDataBaseMockRecorder) UpdateShow(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateShow", reflect.TypeOf((*MockDataBase)(nil).UpdateShow), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateShow", reflect.TypeOf((*MockDataBase)(nil).UpdateShow), arg0)
 }
 
 // UpdateUser mocks base method.

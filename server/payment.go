@@ -21,9 +21,7 @@ func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Paym
 		Status:           status,
 		UserID:           int(in.GetUserId()),
 	}
-	userId := in.GetUserId()
-
-	user := s.Db.AddPayment(newPayment, int(userId))
+	user := s.Db.AddPayment(newPayment)
 
 	if status {
 		mail.Mail(fmt.Sprint(in.GetAmount()), user.Email, fmt.Sprint(in.GetDiscountCouponId()), in.GetMode())

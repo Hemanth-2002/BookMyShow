@@ -22,11 +22,9 @@ func (s *BmsServer) AddBooking(ctx context.Context, in *pb.NewBooking) (*pb.Book
 // function to get list of bookings by user
 func (s *BmsServer) GetListOfBookingsByUser(ctx context.Context, in *pb.User) (*pb.Bookings, error) {
 	log.Printf("Getting list of bookings by user called")
-	Bookings := []model.Booking{}
 	AllBookings := []*pb.Booking{}
-	UserId := in.GetId()
-	Booking := &model.Booking{UserID: int(UserId)}
-	s.Db.GetBookings(*Booking)
+	UserId := int(in.GetId())
+	Bookings := s.Db.GetBookings(UserId)
 	for _, booking := range Bookings {
 		AllBookings = append(AllBookings, &pb.Booking{
 			UserId: uint64(booking.UserID),

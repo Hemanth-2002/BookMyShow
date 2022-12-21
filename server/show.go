@@ -31,6 +31,7 @@ func (s *BmsServer) UpdateShowDetails(ctx context.Context, in *pb.Show) (*pb.Sho
 	Show := model.Show{
 		MovieID: int(in.GetMovieId()),
 	}
-	s.Db.UpdateShow(int(in.Id), Show)
+	Show.ID = uint(in.Id)
+	s.Db.UpdateShow(Show)
 	return &pb.Show{Date: in.GetDate(), MovieId: in.GetMovieId()}, nil
 }
