@@ -135,7 +135,7 @@ func (mr *MockDataBaseMockRecorder) GetBookings(arg0 interface{}) *gomock.Call {
 }
 
 // GetMovie mocks base method.
-func (m *MockDataBase) GetMovie(arg0 model.MoviePreference) ([]model.Movie, error) {
+func (m *MockDataBase) GetMovie(arg0 model.Movie) ([]model.Movie, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMovie", arg0)
 	ret0, _ := ret[0].([]model.Movie)

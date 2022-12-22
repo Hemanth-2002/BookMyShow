@@ -88,7 +88,7 @@ func main() {
 	}
 
 	// get movie by preference
-	MovieByPreference, err := client.GetMovieByPreference(ctx, &pb.MoviePreference{
+	MovieByPreference, err := client.GetMovieByPreference(ctx, &pb.Movie{
 		Genre:  "Action",
 		Rating: 8,
 	})

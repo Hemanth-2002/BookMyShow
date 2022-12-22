@@ -27,7 +27,7 @@ func TestAddSeat(t *testing.T) {
 	mockDb := mocks.NewMockDataBase(controller)
 	testSeat := BmsServer{Db: mockDb}
 	ctx := context.Background()
-	mockDb.EXPECT().AddSeat(mockSeat).Return()
+	mockDb.EXPECT().AddSeat(mockSeat).Return(nil)
 	got, err := testSeat.AddSeat(ctx, &NewSeat)
 	model.CheckError(err)
 	expected := &pb.Seat{

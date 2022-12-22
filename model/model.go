@@ -34,12 +34,6 @@ type Movie struct {
 	Show        []Show
 }
 
-type MoviePreference struct {
-	Language string
-	Rating   int
-	Genre    string
-}
-
 type Show struct {
 	gorm.Model
 	Date      string

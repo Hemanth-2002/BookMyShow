@@ -10,7 +10,7 @@ service BmsDatabaseCrud{
     rpc AddBooking(NewBooking) returns (Booking){}
     rpc AddPayment(NewPayment) returns (Payment){}
     rpc GetMovies(EmptyMovie) returns (Movies){}
-    rpc GetMovieByPreference(MoviePreference) returns (Movies){}
+    rpc GetMovieByPreference(Movie) returns (Movies){}
     rpc GetListOfShowsByTheatre(Theatre) returns (Shows){}
     rpc GetListOfBookingsByUser(User) returns (Bookings){}
     rpc UpdateUser(User) returns (User){}
@@ -63,12 +63,6 @@ message NewMovie {
 }
 
 message EmptyMovie {
-}
-
-message MoviePreference {
-    string language = 1;
-    uint64 rating = 2;
-    string genre = 3;
 }
 
 message Movies {

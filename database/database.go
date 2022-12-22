@@ -15,7 +15,7 @@ type DataBase interface {
 	AddPayment(model.Payment) (model.User, error)
 	AddMovie(model.Movie) error
 	GetMovies() ([]model.Movie, error)
-	GetMovie(model.MoviePreference) ([]model.Movie, error)
+	GetMovie(model.Movie) ([]model.Movie, error)
 	UpdateMovie(model.Movie) error
 	AddBooking(model.Booking) error
 	GetBookings(int) ([]model.Booking, error)
@@ -70,9 +70,9 @@ func (db DBClient) GetMovies() ([]model.Movie, error) {
 	return Movies, DB.Error
 }
 
-func (db DBClient) GetMovie(movie model.MoviePreference) ([]model.Movie, error) {
+func (db DBClient) GetMovie(movie model.Movie) ([]model.Movie, error) {
 	Movies := []model.Movie{}
-	DB := db.Db.Where(movie).Find(&Movies)
+	DB := db.Db.Model(&Movies).Where(&movie).Find(&Movies)
 	return Movies, DB.Error
 }
 

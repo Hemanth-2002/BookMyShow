@@ -41,12 +41,12 @@ var MockMovie = model.Movie{
 	Status:      "Active",
 }
 
-var MockPreferredMovie = model.MoviePreference{
+var MockPreferredMovie = model.Movie{
 	Genre:  "Action",
 	Rating: 9,
 }
 
-var PreferredMovie = pb.MoviePreference{
+var PreferredMovie = pb.Movie{
 	Genre:  "Action",
 	Rating: 9,
 }
@@ -57,7 +57,7 @@ func TestAddMovie(t *testing.T) {
 	mockDb := mocks.NewMockDataBase(controller)
 	testMovie := BmsServer{Db: mockDb}
 	ctx := context.Background()
-	mockDb.EXPECT().AddMovie(MockMovie).Return()
+	mockDb.EXPECT().AddMovie(MockMovie).Return(nil)
 	got, err := testMovie.AddMovie(ctx, &NewMovie)
 	model.CheckError(err)
 	expected := &pb.Movie{
@@ -83,7 +83,7 @@ func TestGetMovies(t *testing.T) {
 	testMovie := BmsServer{Db: mockDb}
 	ctx := context.Background()
 
-	mockDb.EXPECT().GetMovies().Return([]model.Movie{MockMovie})
+	mockDb.EXPECT().GetMovies().Return([]model.Movie{MockMovie}, nil)
 	movies, err := testMovie.GetMovies(ctx, &pb.EmptyMovie{})
 	var got = movies.Movies
 	model.CheckError(err)
@@ -110,7 +110,7 @@ func TestGetMovieByPreference(t *testing.T) {
 	mockDb := mocks.NewMockDataBase(controller)
 	testMovie := BmsServer{Db: mockDb}
 	ctx := context.Background()
-	mockDb.EXPECT().GetMovie(MockPreferredMovie).Return([]model.Movie{MockMovie})
+	mockDb.EXPECT().GetMovie(MockPreferredMovie).Return([]model.Movie{MockMovie}, nil)
 	movies, err := testMovie.GetMovieByPreference(ctx, &PreferredMovie)
 	var got = movies.Movies
 	model.CheckError(err)
@@ -139,7 +139,7 @@ func TestUpdateMovieStatus(t *testing.T) {
 	testMovie := BmsServer{Db: mockDb}
 	ctx := context.Background()
 	MovieUpdate.ID = 1
-	mockDb.EXPECT().UpdateMovie(MovieUpdate).Return()
+	mockDb.EXPECT().UpdateMovie(MovieUpdate).Return(nil)
 	MockMovieUpdate.Id = 1
 	got, err := testMovie.UpdateMovieStatus(ctx, &MockMovieUpdate)
 

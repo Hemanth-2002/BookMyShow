@@ -34,7 +34,7 @@ func TestUpdateShowDetails(t *testing.T) {
 	testShow := BmsServer{Db: mockDb}
 	ctx := context.Background()
 	UpdateShow.ID = 1
-	mockDb.EXPECT().UpdateShow(UpdateShow).Return()
+	mockDb.EXPECT().UpdateShow(UpdateShow).Return(nil)
 	MockUpdateShow.Id = 1
 	got, err := testShow.UpdateShowDetails(ctx, &MockUpdateShow)
 	model.CheckError(err)
@@ -54,7 +54,7 @@ func TestGetListOfShowsByTheatre(t *testing.T) {
 	testShow := BmsServer{Db: mockDb}
 	ctx := context.Background()
 	TheatreId := 1
-	mockDb.EXPECT().GetShow(TheatreId).Return([]model.Show{MockShow})
+	mockDb.EXPECT().GetShow(TheatreId).Return([]model.Show{MockShow}, nil)
 	shows, err := testShow.GetListOfShowsByTheatre(ctx, &NewTheatre)
 	got := shows.Shows
 	model.CheckError(err)

@@ -72,13 +72,13 @@ func (s *BmsServer) GetMovies(ctx context.Context, in *pb.EmptyMovie) (*pb.Movie
 }
 
 // function to get movie by preference (rating,language,genre)
-func (s *BmsServer) GetMovieByPreference(ctx context.Context, in *pb.MoviePreference) (*pb.Movies, error) {
+func (s *BmsServer) GetMovieByPreference(ctx context.Context, in *pb.Movie) (*pb.Movies, error) {
 	log.Printf("Getting movie by preference called")
 	AllMovies := []*pb.Movie{}
 	language := in.GetLanguage()
 	rating := in.GetRating()
 	genre := in.GetGenre()
-	movie := model.MoviePreference{Language: language, Rating: int(rating), Genre: genre}
+	movie := model.Movie{Language: language, Rating: int(rating), Genre: genre}
 	Movies, err := s.Db.GetMovie(movie)
 	CheckCall(err)
 	for _, movie := range Movies {

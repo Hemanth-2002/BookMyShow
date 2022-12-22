@@ -33,7 +33,7 @@ func TestAddPayment(t *testing.T) {
 	mockDb := mocks.NewMockDataBase(controller)
 	testPayment := BmsServer{Db: mockDb}
 	ctx := context.Background()
-	mockDb.EXPECT().AddPayment(mockPayment).Return(mockUser)
+	mockDb.EXPECT().AddPayment(mockPayment).Return(mockUser, nil)
 	got, err := testPayment.AddPayment(ctx, &NewPayment)
 	model.CheckError(err)
 	expected := &pb.Payment{

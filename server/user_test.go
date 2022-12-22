@@ -39,7 +39,7 @@ func TestCreateUser(t *testing.T) {
 	mockDb := mocks.NewMockDataBase(controller)
 	testUser := BmsServer{Db: mockDb}
 	ctx := context.Background()
-	mockDb.EXPECT().CreateUser(mockUser).Return()
+	mockDb.EXPECT().CreateUser(mockUser).Return(nil)
 	got, err := testUser.CreateUser(ctx, &UserNew)
 	model.CheckError(err)
 	expected := &pb.User{
@@ -61,7 +61,7 @@ func TestUpdateUser(t *testing.T) {
 	testUser := BmsServer{Db: mockDb}
 	ctx := context.Background()
 	UserUpdate.ID = 1
-	mockDb.EXPECT().UpdateUser(UserUpdate).Return()
+	mockDb.EXPECT().UpdateUser(UserUpdate).Return(nil)
 	MockUserUpdate.Id = 1
 	got, err := testUser.UpdateUser(ctx, &MockUserUpdate)
 

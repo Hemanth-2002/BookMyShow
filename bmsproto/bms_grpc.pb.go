@@ -27,7 +27,7 @@ type BmsDatabaseCrudClient interface {
 	AddBooking(ctx context.Context, in *NewBooking, opts ...grpc.CallOption) (*Booking, error)
 	AddPayment(ctx context.Context, in *NewPayment, opts ...grpc.CallOption) (*Payment, error)
 	GetMovies(ctx context.Context, in *EmptyMovie, opts ...grpc.CallOption) (*Movies, error)
-	GetMovieByPreference(ctx context.Context, in *MoviePreference, opts ...grpc.CallOption) (*Movies, error)
+	GetMovieByPreference(ctx context.Context, in *Movie, opts ...grpc.CallOption) (*Movies, error)
 	GetListOfShowsByTheatre(ctx context.Context, in *Theatre, opts ...grpc.CallOption) (*Shows, error)
 	GetListOfBookingsByUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*Bookings, error)
 	UpdateUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
@@ -90,7 +90,7 @@ func (c *bmsDatabaseCrudClient) GetMovies(ctx context.Context, in *EmptyMovie, o
 	return out, nil
 }
 
-func (c *bmsDatabaseCrudClient) GetMovieByPreference(ctx context.Context, in *MoviePreference, opts ...grpc.CallOption) (*Movies, error) {
+func (c *bmsDatabaseCrudClient) GetMovieByPreference(ctx context.Context, in *Movie, opts ...grpc.CallOption) (*Movies, error) {
 	out := new(Movies)
 	err := c.cc.Invoke(ctx, "/bms.BmsDatabaseCrud/GetMovieByPreference", in, out, opts...)
 	if err != nil {
@@ -171,7 +171,7 @@ type BmsDatabaseCrudServer interface {
 	AddBooking(context.Context, *NewBooking) (*Booking, error)
 	AddPayment(context.Context, *NewPayment) (*Payment, error)
 	GetMovies(context.Context, *EmptyMovie) (*Movies, error)
-	GetMovieByPreference(context.Context, *MoviePreference) (*Movies, error)
+	GetMovieByPreference(context.Context, *Movie) (*Movies, error)
 	GetListOfShowsByTheatre(context.Context, *Theatre) (*Shows, error)
 	GetListOfBookingsByUser(context.Context, *User) (*Bookings, error)
 	UpdateUser(context.Context, *User) (*User, error)
@@ -201,7 +201,7 @@ func (UnimplementedBmsDatabaseCrudServer) AddPayment(context.Context, *NewPaymen
 func (UnimplementedBmsDatabaseCrudServer) GetMovies(context.Context, *EmptyMovie) (*Movies, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMovies not implemented")
 }
-func (UnimplementedBmsDatabaseCrudServer) GetMovieByPreference(context.Context, *MoviePreference) (*Movies, error) {
+func (UnimplementedBmsDatabaseCrudServer) GetMovieByPreference(context.Context, *Movie) (*Movies, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMovieByPreference not implemented")
 }
 func (UnimplementedBmsDatabaseCrudServer) GetListOfShowsByTheatre(context.Context, *Theatre) (*Shows, error) {
@@ -329,7 +329,7 @@ func _BmsDatabaseCrud_GetMovies_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _BmsDatabaseCrud_GetMovieByPreference_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MoviePreference)
+	in := new(Movie)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -341,7 +341,7 @@ func _BmsDatabaseCrud_GetMovieByPreference_Handler(srv interface{}, ctx context.
 		FullMethod: "/bms.BmsDatabaseCrud/GetMovieByPreference",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BmsDatabaseCrudServer).GetMovieByPreference(ctx, req.(*MoviePreference))
+		return srv.(BmsDatabaseCrudServer).GetMovieByPreference(ctx, req.(*Movie))
 	}
 	return interceptor(ctx, in, info, handler)
 }

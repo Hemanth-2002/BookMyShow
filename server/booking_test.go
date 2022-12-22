@@ -35,7 +35,7 @@ func TestAddBooking(t *testing.T) {
 	mockDb := mocks.NewMockDataBase(controller)
 	testBooking := BmsServer{Db: mockDb}
 	ctx := context.Background()
-	mockDb.EXPECT().AddBooking(mockBooking).Return()
+	mockDb.EXPECT().AddBooking(mockBooking).Return(nil)
 	got, err := testBooking.AddBooking(ctx, &NewBooking)
 	model.CheckError(err)
 	expected := &pb.Booking{
@@ -56,7 +56,7 @@ func TestGetListOfBookingsByUser(t *testing.T) {
 	testBooking := BmsServer{Db: mockDb}
 	ctx := context.Background()
 	UserId := 1
-	mockDb.EXPECT().GetBookings(UserId).Return([]model.Booking{mockBooking})
+	mockDb.EXPECT().GetBookings(UserId).Return([]model.Booking{mockBooking}, nil)
 	bookings, err := testBooking.GetListOfBookingsByUser(ctx, &NewUser)
 	got := bookings.Bookings
 	model.CheckError(err)
@@ -79,7 +79,7 @@ func TestCancelBooking(t *testing.T) {
 	testBooking := BmsServer{Db: mockDb}
 	ctx := context.Background()
 	BookingId := 1
-	mockDb.EXPECT().CancelBooking(BookingId).Return()
+	mockDb.EXPECT().CancelBooking(BookingId).Return(nil)
 	CancelledBooking.Id = 1
 	got, err := testBooking.CancelBooking(ctx, &CancelledBooking)
 	model.CheckError(err)
