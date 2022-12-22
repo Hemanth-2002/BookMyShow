@@ -18,15 +18,10 @@ func StartDB() (*gorm.DB, error) {
 		os.Exit(1)
 	}
 
-	envMap, mapErr := godotenv.Read(".env")
-	if mapErr != nil {
-		fmt.Printf("Error loading .env into map[string]string\n")
-		os.Exit(1)
-	}
-
 	db_user := flag.String("user", "postgres", "database user")
-
-	conn := "user=" + *db_user + " password=" + envMap["db_password"] + " dbname=" + envMap["db_name"] + " sslmode=disable"
+	db_password := os.Getenv("db_password")
+	db_name := os.Getenv("db_name")
+	conn := "user=" + *db_user + " password=" + db_password + " dbname=" + db_name + " sslmode=disable"
 	db, err := gorm.Open("postgres", conn)
 	CheckError(err)
 

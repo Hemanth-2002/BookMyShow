@@ -11,7 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-var mockPayment = model.Payment{
+var MockPayment = model.Payment{
 	Amount:    150,
 	Mode:      "credit-card",
 	Status:    false,
@@ -33,7 +33,7 @@ func TestAddPayment(t *testing.T) {
 	mockDb := mocks.NewMockDataBase(controller)
 	testPayment := BmsServer{Db: mockDb}
 	ctx := context.Background()
-	mockDb.EXPECT().AddPayment(mockPayment).Return(mockUser, nil)
+	mockDb.EXPECT().AddPayment(MockPayment).Return(mockUser, nil)
 	got, err := testPayment.AddPayment(ctx, &NewPayment)
 	model.CheckError(err)
 	expected := &pb.Payment{

@@ -11,7 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-var mockSeat = model.Seat{
+var MockSeat = model.Seat{
 	BookingID:  1,
 	SeatNumber: 2,
 }
@@ -27,7 +27,7 @@ func TestAddSeat(t *testing.T) {
 	mockDb := mocks.NewMockDataBase(controller)
 	testSeat := BmsServer{Db: mockDb}
 	ctx := context.Background()
-	mockDb.EXPECT().AddSeat(mockSeat).Return(nil)
+	mockDb.EXPECT().AddSeat(MockSeat).Return(nil)
 	got, err := testSeat.AddSeat(ctx, &NewSeat)
 	model.CheckError(err)
 	expected := &pb.Seat{
