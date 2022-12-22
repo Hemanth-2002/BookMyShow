@@ -54,7 +54,8 @@ func (s *BmsServer) AddMovie(ctx context.Context, in *pb.NewMovie) (*pb.Movie, e
 func (s *BmsServer) GetMovies(ctx context.Context, in *pb.EmptyMovie) (*pb.Movies, error) {
 	log.Printf("Getting employees called")
 	AllMovies := []*pb.Movie{}
-	Movies := s.Db.GetMovies()
+	Movies, status, err := s.Db.GetMovies()
+	CheckCall(status, err)
 	for _, movie := range Movies {
 		AllMovies = append(AllMovies, &pb.Movie{
 			MovieName:   movie.MovieName,
@@ -78,7 +79,8 @@ func (s *BmsServer) GetMovieByPreference(ctx context.Context, in *pb.MoviePrefer
 	rating := in.GetRating()
 	genre := in.GetGenre()
 	movie := model.MoviePreference{Language: language, Rating: int(rating), Genre: genre}
-	Movies := s.Db.GetMovie(movie)
+	Movies, status, err := s.Db.GetMovie(movie)
+	CheckCall(status, err)
 	for _, movie := range Movies {
 		AllMovies = append(AllMovies, &pb.Movie{
 			MovieName:   movie.MovieName,
@@ -101,6 +103,7 @@ func (s *BmsServer) UpdateMovieStatus(ctx context.Context, in *pb.Movie) (*pb.Mo
 		Status: in.GetStatus(),
 	}
 	updatedStatus.ID = uint(in.Id)
-	s.Db.UpdateMovie(updatedStatus)
+	status, err := s.Db.UpdateMovie(updatedStatus)
+	CheckCall(status, err)
 	return &pb.Movie{Status: in.GetStatus()}, nil
 }

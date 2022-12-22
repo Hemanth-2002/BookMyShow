@@ -35,9 +35,12 @@ func (m *MockDataBase) EXPECT() *MockDataBaseMockRecorder {
 }
 
 // AddBooking mocks base method.
-func (m *MockDataBase) AddBooking(arg0 model.Booking) {
+func (m *MockDataBase) AddBooking(arg0 model.Booking) (bool, error) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddBooking", arg0)
+	ret := m.ctrl.Call(m, "AddBooking", arg0)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // AddBooking indicates an expected call of AddBooking.
@@ -47,9 +50,12 @@ func (mr *MockDataBaseMockRecorder) AddBooking(arg0 interface{}) *gomock.Call {
 }
 
 // AddMovie mocks base method.
-func (m *MockDataBase) AddMovie(arg0 model.Movie) {
+func (m *MockDataBase) AddMovie(arg0 model.Movie) (bool, error) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddMovie", arg0)
+	ret := m.ctrl.Call(m, "AddMovie", arg0)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // AddMovie indicates an expected call of AddMovie.
@@ -59,11 +65,13 @@ func (mr *MockDataBaseMockRecorder) AddMovie(arg0 interface{}) *gomock.Call {
 }
 
 // AddPayment mocks base method.
-func (m *MockDataBase) AddPayment(arg0 model.Payment) model.User {
+func (m *MockDataBase) AddPayment(arg0 model.Payment) (model.User, bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddPayment", arg0)
 	ret0, _ := ret[0].(model.User)
-	return ret0
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // AddPayment indicates an expected call of AddPayment.
@@ -73,9 +81,12 @@ func (mr *MockDataBaseMockRecorder) AddPayment(arg0 interface{}) *gomock.Call {
 }
 
 // AddSeat mocks base method.
-func (m *MockDataBase) AddSeat(arg0 model.Seat) {
+func (m *MockDataBase) AddSeat(arg0 model.Seat) (bool, error) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddSeat", arg0)
+	ret := m.ctrl.Call(m, "AddSeat", arg0)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // AddSeat indicates an expected call of AddSeat.
@@ -85,9 +96,12 @@ func (mr *MockDataBaseMockRecorder) AddSeat(arg0 interface{}) *gomock.Call {
 }
 
 // CancelBooking mocks base method.
-func (m *MockDataBase) CancelBooking(arg0 int) {
+func (m *MockDataBase) CancelBooking(arg0 int) (bool, error) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "CancelBooking", arg0)
+	ret := m.ctrl.Call(m, "CancelBooking", arg0)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CancelBooking indicates an expected call of CancelBooking.
@@ -97,9 +111,12 @@ func (mr *MockDataBaseMockRecorder) CancelBooking(arg0 interface{}) *gomock.Call
 }
 
 // CreateUser mocks base method.
-func (m *MockDataBase) CreateUser(arg0 model.User) {
+func (m *MockDataBase) CreateUser(arg0 model.User) (bool, error) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "CreateUser", arg0)
+	ret := m.ctrl.Call(m, "CreateUser", arg0)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateUser indicates an expected call of CreateUser.
@@ -109,11 +126,13 @@ func (mr *MockDataBaseMockRecorder) CreateUser(arg0 interface{}) *gomock.Call {
 }
 
 // GetBookings mocks base method.
-func (m *MockDataBase) GetBookings(arg0 int) []model.Booking {
+func (m *MockDataBase) GetBookings(arg0 int) ([]model.Booking, bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBookings", arg0)
 	ret0, _ := ret[0].([]model.Booking)
-	return ret0
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetBookings indicates an expected call of GetBookings.
@@ -123,11 +142,13 @@ func (mr *MockDataBaseMockRecorder) GetBookings(arg0 interface{}) *gomock.Call {
 }
 
 // GetMovie mocks base method.
-func (m *MockDataBase) GetMovie(arg0 model.MoviePreference) []model.Movie {
+func (m *MockDataBase) GetMovie(arg0 model.MoviePreference) ([]model.Movie, bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMovie", arg0)
 	ret0, _ := ret[0].([]model.Movie)
-	return ret0
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetMovie indicates an expected call of GetMovie.
@@ -137,11 +158,13 @@ func (mr *MockDataBaseMockRecorder) GetMovie(arg0 interface{}) *gomock.Call {
 }
 
 // GetMovies mocks base method.
-func (m *MockDataBase) GetMovies() []model.Movie {
+func (m *MockDataBase) GetMovies() ([]model.Movie, bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMovies")
 	ret0, _ := ret[0].([]model.Movie)
-	return ret0
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetMovies indicates an expected call of GetMovies.
@@ -151,11 +174,13 @@ func (mr *MockDataBaseMockRecorder) GetMovies() *gomock.Call {
 }
 
 // GetShow mocks base method.
-func (m *MockDataBase) GetShow(arg0 int) []model.Show {
+func (m *MockDataBase) GetShow(arg0 int) ([]model.Show, bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetShow", arg0)
 	ret0, _ := ret[0].([]model.Show)
-	return ret0
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // GetShow indicates an expected call of GetShow.
@@ -165,9 +190,12 @@ func (mr *MockDataBaseMockRecorder) GetShow(arg0 interface{}) *gomock.Call {
 }
 
 // UpdateMovie mocks base method.
-func (m *MockDataBase) UpdateMovie(arg0 model.Movie) {
+func (m *MockDataBase) UpdateMovie(arg0 model.Movie) (bool, error) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "UpdateMovie", arg0)
+	ret := m.ctrl.Call(m, "UpdateMovie", arg0)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // UpdateMovie indicates an expected call of UpdateMovie.
@@ -177,9 +205,12 @@ func (mr *MockDataBaseMockRecorder) UpdateMovie(arg0 interface{}) *gomock.Call {
 }
 
 // UpdateShow mocks base method.
-func (m *MockDataBase) UpdateShow(arg0 model.Show) {
+func (m *MockDataBase) UpdateShow(arg0 model.Show) (bool, error) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "UpdateShow", arg0)
+	ret := m.ctrl.Call(m, "UpdateShow", arg0)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // UpdateShow indicates an expected call of UpdateShow.
@@ -189,9 +220,12 @@ func (mr *MockDataBaseMockRecorder) UpdateShow(arg0 interface{}) *gomock.Call {
 }
 
 // UpdateUser mocks base method.
-func (m *MockDataBase) UpdateUser(arg0 model.User) {
+func (m *MockDataBase) UpdateUser(arg0 model.User) (bool, error) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "UpdateUser", arg0)
+	ret := m.ctrl.Call(m, "UpdateUser", arg0)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // UpdateUser indicates an expected call of UpdateUser.

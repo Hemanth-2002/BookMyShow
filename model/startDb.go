@@ -2,18 +2,31 @@ package model
 
 import (
 	"flag"
+	"fmt"
+	"os"
 
 	"github.com/jinzhu/gorm"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 func StartDB() (*gorm.DB, error) {
 
-	db_user := flag.String("user", "postgres", "database user")
-	db_password := flag.String("password", "MohanNeelima@01", "database password")
-	db_name := flag.String("name", "BookMyShow", "database name")
+	envErr := godotenv.Load(".env")
+	if envErr != nil {
+		fmt.Printf("Could not load .env file")
+		os.Exit(1)
+	}
 
-	conn := "user=" + *db_user + " password=" + *db_password + " dbname=" + *db_name + " sslmode=disable"
+	envMap, mapErr := godotenv.Read(".env")
+	if mapErr != nil {
+		fmt.Printf("Error loading .env into map[string]string\n")
+		os.Exit(1)
+	}
+
+	db_user := flag.String("user", "postgres", "database user")
+
+	conn := "user=" + *db_user + " password=" + envMap["db_password"] + " dbname=" + envMap["db_name"] + " sslmode=disable"
 	db, err := gorm.Open("postgres", conn)
 	CheckError(err)
 

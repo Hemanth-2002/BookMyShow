@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/golang/mock v1.6.0
 	github.com/jinzhu/gorm v1.9.16
+	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.7
 	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
