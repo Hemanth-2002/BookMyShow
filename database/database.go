@@ -7,92 +7,92 @@ import (
 )
 
 type DataBase interface {
-	CreateUser(model.User) (bool, error)
-	UpdateUser(model.User) (bool, error)
-	GetShow(int) ([]model.Show, bool, error)
-	UpdateShow(model.Show) (bool, error)
-	AddSeat(model.Seat) (bool, error)
-	AddPayment(model.Payment) (model.User, bool, error)
-	AddMovie(model.Movie) (bool, error)
-	GetMovies() ([]model.Movie, bool, error)
-	GetMovie(model.MoviePreference) ([]model.Movie, bool, error)
-	UpdateMovie(model.Movie) (bool, error)
-	AddBooking(model.Booking) (bool, error)
-	GetBookings(int) ([]model.Booking, bool, error)
-	CancelBooking(int) (bool, error)
+	CreateUser(model.User) error
+	UpdateUser(model.User) error
+	GetShow(int) ([]model.Show, error)
+	UpdateShow(model.Show) error
+	AddSeat(model.Seat) error
+	AddPayment(model.Payment) (model.User, error)
+	AddMovie(model.Movie) error
+	GetMovies() ([]model.Movie, error)
+	GetMovie(model.MoviePreference) ([]model.Movie, error)
+	UpdateMovie(model.Movie) error
+	AddBooking(model.Booking) error
+	GetBookings(int) ([]model.Booking, error)
+	CancelBooking(int) error
 }
 
 type DBClient struct {
 	Db *gorm.DB
 }
 
-func (db DBClient) CreateUser(user model.User) (bool, error) {
-	db.Db.Save(&user)
-	return true, nil
+func (db DBClient) CreateUser(user model.User) error {
+	DB := db.Db.Save(&user)
+	return DB.Error
 }
 
-func (db DBClient) UpdateUser(user model.User) (bool, error) {
-	db.Db.Save(&user)
-	return true, nil
+func (db DBClient) UpdateUser(user model.User) error {
+	DB := db.Db.Save(&user)
+	return DB.Error
 }
 
-func (db DBClient) GetShow(theatreId int) ([]model.Show, bool, error) {
+func (db DBClient) GetShow(theatreId int) ([]model.Show, error) {
 	Shows := []model.Show{}
-	db.Db.Where(&model.Show{TheatreID: int(theatreId)}).Find(&Shows)
-	return Shows, true, nil
+	DB := db.Db.Where(&model.Show{TheatreID: int(theatreId)}).Find(&Shows)
+	return Shows, DB.Error
 }
 
-func (db DBClient) UpdateShow(show model.Show) (bool, error) {
-	db.Db.Save(&show)
-	return true, nil
+func (db DBClient) UpdateShow(show model.Show) error {
+	DB := db.Db.Save(&show)
+	return DB.Error
 }
 
-func (db DBClient) AddSeat(seat model.Seat) (bool, error) {
-	db.Db.Save(&seat)
-	return true, nil
+func (db DBClient) AddSeat(seat model.Seat) error {
+	DB := db.Db.Save(&seat)
+	return DB.Error
 }
 
-func (db DBClient) AddPayment(payment model.Payment) (model.User, bool, error) {
+func (db DBClient) AddPayment(payment model.Payment) (model.User, error) {
 	user := model.User{}
 	db.Db.Save(&payment)
-	db.Db.Where("id = ?", payment.UserID).Find(&user)
-	return user, true, nil
+	DB := db.Db.Where("id = ?", payment.UserID).Find(&user)
+	return user, DB.Error
 }
 
-func (db DBClient) AddMovie(movie model.Movie) (bool, error) {
-	db.Db.Save(&movie)
-	return true, nil
+func (db DBClient) AddMovie(movie model.Movie) error {
+	DB := db.Db.Save(&movie)
+	return DB.Error
 }
 
-func (db DBClient) GetMovies() ([]model.Movie, bool, error) {
+func (db DBClient) GetMovies() ([]model.Movie, error) {
 	Movies := []model.Movie{}
-	db.Db.Find(&Movies)
-	return Movies, true, nil
+	DB := db.Db.Find(&Movies)
+	return Movies, DB.Error
 }
 
-func (db DBClient) GetMovie(movie model.MoviePreference) ([]model.Movie, bool, error) {
+func (db DBClient) GetMovie(movie model.MoviePreference) ([]model.Movie, error) {
 	Movies := []model.Movie{}
-	db.Db.Where(movie).Find(&Movies)
-	return Movies, true, nil
+	DB := db.Db.Where(movie).Find(&Movies)
+	return Movies, DB.Error
 }
 
-func (db DBClient) UpdateMovie(movie model.Movie) (bool, error) {
-	db.Db.Save(&movie)
-	return true, nil
+func (db DBClient) UpdateMovie(movie model.Movie) error {
+	DB := db.Db.Save(&movie)
+	return DB.Error
 }
 
-func (db DBClient) AddBooking(booking model.Booking) (bool, error) {
-	db.Db.Save(&booking)
-	return true, nil
+func (db DBClient) AddBooking(booking model.Booking) error {
+	DB := db.Db.Save(&booking)
+	return DB.Error
 }
 
-func (db DBClient) GetBookings(userId int) ([]model.Booking, bool, error) {
+func (db DBClient) GetBookings(userId int) ([]model.Booking, error) {
 	Bookings := []model.Booking{}
-	db.Db.Where("user_id = ?", userId).Find(&Bookings)
-	return Bookings, true, nil
+	DB := db.Db.Where("user_id = ?", userId).Find(&Bookings)
+	return Bookings, DB.Error
 }
 
-func (db DBClient) CancelBooking(bookingId int) (bool, error) {
-	db.Db.Model(&model.Booking{}).Where("id=?", bookingId).Delete(&model.Booking{})
-	return true, nil
+func (db DBClient) CancelBooking(bookingId int) error {
+	DB := db.Db.Model(&model.Booking{}).Where("id=?", bookingId).Delete(&model.Booking{})
+	return DB.Error
 }

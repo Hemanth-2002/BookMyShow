@@ -16,8 +16,8 @@ func (s *BmsServer) CreateUser(ctx context.Context, in *pb.NewUser) (*pb.User, e
 		Email:       in.GetEmail(),
 		PhoneNumber: in.GetPhoneNumber(),
 	}
-	status, err := s.Db.CreateUser(newUser)
-	CheckCall(status, err)
+	err := s.Db.CreateUser(newUser)
+	CheckCall(err)
 	return &pb.User{UserName: in.GetUserName(), Password: in.GetPassword(), Email: in.GetEmail(), PhoneNumber: in.GetPhoneNumber(), Id: uint64(newUser.ID)}, nil
 }
 
@@ -30,7 +30,7 @@ func (s *BmsServer) UpdateUser(ctx context.Context, in *pb.User) (*pb.User, erro
 		PhoneNumber: in.GetPhoneNumber(),
 	}
 	updatedUser.ID = uint(in.Id)
-	status, err := s.Db.UpdateUser(updatedUser)
-	CheckCall(status, err)
+	err := s.Db.UpdateUser(updatedUser)
+	CheckCall(err)
 	return &pb.User{Password: in.GetPassword(), Email: in.GetEmail(), PhoneNumber: in.GetPhoneNumber()}, nil
 }

@@ -12,8 +12,8 @@ func (s *BmsServer) GetListOfShowsByTheatre(ctx context.Context, in *pb.Theatre)
 	log.Printf("Getting list of shows by theatre called")
 	AllShows := []*pb.Show{}
 	TheatreId := in.GetTheatreId()
-	Shows, status, err := s.Db.GetShow(int(TheatreId))
-	CheckCall(status, err)
+	Shows, err := s.Db.GetShow(int(TheatreId))
+	CheckCall(err)
 	for _, show := range Shows {
 		AllShows = append(AllShows, &pb.Show{
 			Date:      show.Date,
@@ -33,7 +33,7 @@ func (s *BmsServer) UpdateShowDetails(ctx context.Context, in *pb.Show) (*pb.Sho
 		MovieID: int(in.GetMovieId()),
 	}
 	Show.ID = uint(in.Id)
-	status, err := s.Db.UpdateShow(Show)
-	CheckCall(status, err)
+	err := s.Db.UpdateShow(Show)
+	CheckCall(err)
 	return &pb.Show{Date: in.GetDate(), MovieId: in.GetMovieId()}, nil
 }

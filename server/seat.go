@@ -14,7 +14,7 @@ func (s *BmsServer) AddSeat(ctx context.Context, in *pb.NewSeat) (*pb.Seat, erro
 		BookingID:  int(in.GetBookingId()),
 		SeatNumber: int(in.GetSeatNumber()),
 	}
-	status, err := s.Db.AddSeat(newSeat)
-	CheckCall(status, err)
+	err := s.Db.AddSeat(newSeat)
+	CheckCall(err)
 	return &pb.Seat{BookingId: in.GetBookingId(), SeatNumber: in.GetSeatNumber(), Id: uint64(newSeat.ID)}, nil
 }
