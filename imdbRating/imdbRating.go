@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 )
 
 func ImdbRating(movieName string) int {
@@ -13,8 +14,8 @@ func ImdbRating(movieName string) int {
 	url := fmt.Sprintf("https://mdblist.p.rapidapi.com/?s=%s&m=movie&l=1", movieName)
 
 	req, _ := http.NewRequest("GET", url, nil)
-
-	req.Header.Add("X-RapidAPI-Key", "285bd11398msh3a5f0f9c659453fp128fd7jsn73c2bb09d864")
+	key := os.Getenv("X-RapidAPI-Key-Rating")
+	req.Header.Add("X-RapidAPI-Key", key)
 	req.Header.Add("X-RapidAPI-Host", "mdblist.p.rapidapi.com")
 
 	res, err := http.DefaultClient.Do(req)
