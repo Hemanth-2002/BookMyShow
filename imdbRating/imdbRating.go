@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func ImdbRating(movieName string) int {
+func GetImdbRating(movieName string) int {
 
 	url := fmt.Sprintf("https://mdblist.p.rapidapi.com/?s=%s&m=movie&l=1", movieName)
 

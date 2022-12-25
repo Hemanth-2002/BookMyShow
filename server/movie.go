@@ -22,13 +22,13 @@ func (s *BmsServer) AddMovie(ctx context.Context, in *pb.NewMovie) (*pb.Movie, e
 	}
 	//  if no rating is given then rating is fetched using public api else the given rating is taken
 	if in.GetRating() == 0 {
-		newMovie.Rating = imdb.ImdbRating(in.GetMovieName())
+		newMovie.Rating = imdb.GetImdbRating(in.GetMovieName())
 		s.Db.AddMovie(newMovie)
 		return &pb.Movie{
 			MovieName:   in.GetMovieName(),
 			Director:    in.GetDirector(),
 			Description: in.GetDescription(),
-			Rating:      uint64(imdb.ImdbRating(in.GetMovieName())),
+			Rating:      uint64(imdb.GetImdbRating(in.GetMovieName())),
 			Language:    in.GetLanguage(),
 			Genre:       in.GetGenre(),
 			ReleaseDate: in.GetReleaseDate(),
@@ -36,7 +36,11 @@ func (s *BmsServer) AddMovie(ctx context.Context, in *pb.NewMovie) (*pb.Movie, e
 			Id:          uint64(newMovie.ID)}, nil
 	} else {
 		newMovie.Rating = int(in.GetRating())
-		s.Db.AddMovie(newMovie)
+		err := s.Db.AddMovie(newMovie)
+		CheckCall(err)
+		if err != nil {
+			return nil, err
+		}
 		return &pb.Movie{
 			MovieName:   in.GetMovieName(),
 			Director:    in.GetDirector(),
@@ -56,6 +60,9 @@ func (s *BmsServer) GetMovies(ctx context.Context, in *pb.EmptyMovie) (*pb.Movie
 	AllMovies := []*pb.Movie{}
 	Movies, err := s.Db.GetMovies()
 	CheckCall(err)
+	if err != nil {
+		return nil, err
+	}
 	for _, movie := range Movies {
 		AllMovies = append(AllMovies, &pb.Movie{
 			MovieName:   movie.MovieName,
@@ -81,6 +88,9 @@ func (s *BmsServer) GetMovieByPreference(ctx context.Context, in *pb.Movie) (*pb
 	movie := model.Movie{Language: language, Rating: int(rating), Genre: genre}
 	Movies, err := s.Db.GetMovie(movie)
 	CheckCall(err)
+	if err != nil {
+		return nil, err
+	}
 	for _, movie := range Movies {
 		AllMovies = append(AllMovies, &pb.Movie{
 			MovieName:   movie.MovieName,
@@ -105,5 +115,8 @@ func (s *BmsServer) UpdateMovieStatus(ctx context.Context, in *pb.Movie) (*pb.Mo
 	updatedStatus.ID = uint(in.Id)
 	err := s.Db.UpdateMovie(updatedStatus)
 	CheckCall(err)
+	if err != nil {
+		return nil, err
+	}
 	return &pb.Movie{Status: in.GetStatus()}, nil
 }

@@ -23,6 +23,9 @@ func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Paym
 	}
 	user, err := s.Db.AddPayment(newPayment)
 	CheckCall(err)
+	if err != nil {
+		return nil, err
+	}
 
 	if status {
 		sender := "hemanth.kakumanu@beautifulcode.in"

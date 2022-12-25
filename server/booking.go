@@ -6,26 +6,21 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"sync"
-	"time"
 )
 
 // function to add new booking on server
 func (s *BmsServer) AddBooking(ctx context.Context, in *pb.NewBooking) (*pb.Booking, error) {
 	log.Printf("creating new booking called")
-	var wg sync.WaitGroup
-	wg.Add(1)
 	var newBooking = model.Booking{
 		UserID: int(in.GetUserId()),
 		ShowID: int(in.GetShowId()),
 		Amount: int(in.GetAmount()),
 	}
-	go func(newBooking model.Booking) {
-		defer wg.Done()
-		time.Sleep(time.Duration(100) * time.Microsecond)
-	}(newBooking)
 	err := s.Db.AddBooking(newBooking)
 	CheckCall(err)
+	if err != nil {
+		return nil, err
+	}
 	return &pb.Booking{UserId: in.GetUserId(), ShowId: in.GetShowId(), Amount: in.GetAmount(), Id: uint64(newBooking.ID)}, nil
 }
 
@@ -36,6 +31,9 @@ func (s *BmsServer) GetListOfBookingsByUser(ctx context.Context, in *pb.User) (*
 	UserId := int(in.GetId())
 	Bookings, err := s.Db.GetBookings(UserId)
 	CheckCall(err)
+	if err != nil {
+		return nil, err
+	}
 	for _, booking := range Bookings {
 		AllBookings = append(AllBookings, &pb.Booking{
 			UserId: uint64(booking.UserID),
@@ -52,6 +50,9 @@ func (s *BmsServer) CancelBooking(ctx context.Context, in *pb.Booking) (*pb.Book
 	BookingId := in.Id
 	err := s.Db.CancelBooking(int(BookingId))
 	CheckCall(err)
+	if err != nil {
+		return nil, err
+	}
 	return &pb.Booking{Id: in.GetId()}, nil
 }
 

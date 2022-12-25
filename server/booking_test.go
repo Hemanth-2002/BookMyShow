@@ -47,6 +47,37 @@ func TestAddBooking(t *testing.T) {
 		t.Errorf("The Function Retured is not expected one. got %v expected %v",
 			got, expected)
 	}
+
+	// tests := []struct {
+	// 	dbInput     model.Booking
+	// 	serverInput pb.NewBooking
+	// 	expected    *pb.Booking
+	// }{
+	// 	{dbInput: model.Booking{
+	// 		UserID: 2, ShowID: 1, Amount: 150,
+	// 	}, serverInput: pb.NewBooking{
+	// 		UserId: 2, ShowId: 1, Amount: 150,
+	// 	}, expected: &pb.Booking{
+	// 		UserId: 2, ShowId: 1, Amount: 150,
+	// 	}},
+	// 	{dbInput: model.Booking{
+	// 		UserID: 3, ShowID: 2, Amount: 1500,
+	// 	}, serverInput: pb.NewBooking{
+	// 		UserId: 3, ShowId: 2, Amount: 1500,
+	// 	}, expected: &pb.Booking{
+	// 		UserId: 3, ShowId: 2, Amount: 1500,
+	// 	}},
+	// }
+
+	// for i, tc := range tests {
+	// 	mockDb.EXPECT().AddBooking(tc.dbInput).Return(nil)
+	// 	got, err := testBooking.AddBooking(ctx, &tc.serverInput)
+	// 	model.CheckError(err)
+	// 	if !reflect.DeepEqual(got, tc.expected) {
+	// 		t.Errorf("The Function Retured is not expected one. got %v expected %v i = %v",
+	// 			got, tc.expected, i+1)
+	// 	}
+	// }
 }
 
 func TestGetListOfBookingsByUser(t *testing.T) {
