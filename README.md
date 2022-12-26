@@ -29,7 +29,7 @@ Steps to use the application
 6. Run the client file using 
     go run client/client.go
 
-7. The grpc endpoints implementation is present in server folder. It can be accessed by 
+7. The grpc endpoints implementation is present in server folder. It can be accessed by \n
     cd server
 
 8. To test the files use the command
