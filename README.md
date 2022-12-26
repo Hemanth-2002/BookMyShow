@@ -16,21 +16,21 @@ Steps to use the application
 
 1. Download go from official website "https://go.dev/dl/"
 
-2. Clone the repository using 
+2. Clone the repository using <br />
     git clone "https://github.com/Hemanth-2002/BookMyShow.git"
 
 3. Open terminal in the cloned folder 
 
-4. Start the server using 
+4. Start the server using <br />
     go run cmd/server.go
 
 5. The proto files are present in bmsproto folder. (proto files can be uploaded in postman to test the grpc endpoints)
 
-6. Run the client file using 
+6. Run the client file using <br />
     go run client/client.go
 
-7. The grpc endpoints implementation is present in server folder. It can be accessed by \n
+7. The grpc endpoints implementation is present in server folder. It can be accessed by <br />
     cd server
 
-8. To test the files use the command
+8. To test the files use the command <br />
     go test -v / go test
