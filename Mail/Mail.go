@@ -8,10 +8,8 @@ import (
 )
 
 // func main() {
-func Mail(sender string, amount string, receiver string, coupon string, mode string) {
+func Mail(jsonInfo string) {
 	url := "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send"
-
-	jsonInfo := utils.MailInfo(sender, amount, receiver, coupon, mode)
 
 	payload := strings.NewReader(jsonInfo)
 	req, _ := http.NewRequest("POST", url, payload)

@@ -4,6 +4,7 @@ import (
 	mail "bms/Mail"
 	pb "bms/bmsproto"
 	model "bms/model"
+	"bms/utils"
 	"context"
 	"fmt"
 	"log"
@@ -29,7 +30,8 @@ func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Paym
 
 	if status {
 		sender := "hemanth.kakumanu@beautifulcode.in"
-		mail.Mail(fmt.Sprint(sender), fmt.Sprint(in.GetAmount()), user.Email, fmt.Sprint(in.GetDiscountCouponId()), in.GetMode())
+		jsonInfo := utils.MailInfo(fmt.Sprint(sender), fmt.Sprint(in.GetAmount()), user.Email, fmt.Sprint(in.GetDiscountCouponId()), in.GetMode())
+		mail.Mail(jsonInfo)
 	}
 
 	return &pb.Payment{Amount: in.GetAmount(), DiscountCouponId: in.GetDiscountCouponId(), Mode: in.GetMode(), Status: in.GetStatus(), Id: uint64(newPayment.ID)}, nil
