@@ -4,6 +4,7 @@ import (
 	pb "bms/bmsproto"
 	"bms/mocks"
 	model "bms/model"
+	"bms/utils"
 	"context"
 	"reflect"
 	"testing"
@@ -37,7 +38,7 @@ func TestAddBooking(t *testing.T) {
 	ctx := context.Background()
 	mockDb.EXPECT().AddBooking(MockBooking).Return(nil)
 	got, err := testBooking.AddBooking(ctx, &NewBooking)
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := &pb.Booking{
 		UserId: 2,
 		ShowId: 1,
@@ -72,7 +73,7 @@ func TestAddBooking(t *testing.T) {
 	// for i, tc := range tests {
 	// 	mockDb.EXPECT().AddBooking(tc.dbInput).Return(nil)
 	// 	got, err := testBooking.AddBooking(ctx, &tc.serverInput)
-	// 	model.CheckError(err)
+	// 	utils.CheckError(err)
 	// 	if !reflect.DeepEqual(got, tc.expected) {
 	// 		t.Errorf("The Function Retured is not expected one. got %v expected %v i = %v",
 	// 			got, tc.expected, i+1)
@@ -90,7 +91,7 @@ func TestGetListOfBookingsByUser(t *testing.T) {
 	mockDb.EXPECT().GetBookings(UserId).Return([]model.Booking{MockBooking}, nil)
 	bookings, err := testBooking.GetListOfBookingsByUser(ctx, &NewUser)
 	got := bookings.Bookings
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := []*pb.Booking{}
 	expected = append(expected, &pb.Booking{
 		UserId: 2,
@@ -113,7 +114,7 @@ func TestCancelBooking(t *testing.T) {
 	mockDb.EXPECT().CancelBooking(BookingId).Return(nil)
 	CancelledBooking.Id = 1
 	got, err := testBooking.CancelBooking(ctx, &CancelledBooking)
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := &pb.Booking{
 		Id: 1,
 	}

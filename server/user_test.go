@@ -4,6 +4,7 @@ import (
 	pb "bms/bmsproto"
 	"bms/mocks"
 	"bms/model"
+	"bms/utils"
 	"context"
 	"reflect"
 	"testing"
@@ -41,7 +42,7 @@ func TestCreateUser(t *testing.T) {
 	ctx := context.Background()
 	mockDb.EXPECT().CreateUser(mockUser).Return(nil)
 	got, err := testUser.CreateUser(ctx, &UserNew)
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := &pb.User{
 		UserName:    "KHK",
 		Password:    "123",
@@ -65,7 +66,7 @@ func TestUpdateUser(t *testing.T) {
 	MockUserUpdate.Id = 1
 	got, err := testUser.UpdateUser(ctx, &MockUserUpdate)
 
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := &pb.User{
 		Password: "newPwd", PhoneNumber: "456", Email: "hemanthkakumanu1@gmail.com",
 	}

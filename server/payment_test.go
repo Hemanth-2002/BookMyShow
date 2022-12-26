@@ -4,6 +4,7 @@ import (
 	pb "bms/bmsproto"
 	"bms/mocks"
 	model "bms/model"
+	"bms/utils"
 	"context"
 	"reflect"
 	"testing"
@@ -35,7 +36,7 @@ func TestAddPayment(t *testing.T) {
 	ctx := context.Background()
 	mockDb.EXPECT().AddPayment(MockPayment).Return(mockUser, nil)
 	got, err := testPayment.AddPayment(ctx, &NewPayment)
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := &pb.Payment{
 		Amount: 150,
 		Mode:   "credit-card",

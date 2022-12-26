@@ -4,6 +4,7 @@ import (
 	pb "bms/bmsproto"
 	"bms/mocks"
 	"bms/model"
+	"bms/utils"
 	"context"
 	"reflect"
 	"testing"
@@ -29,7 +30,7 @@ func TestAddSeat(t *testing.T) {
 	ctx := context.Background()
 	mockDb.EXPECT().AddSeat(MockSeat).Return(nil)
 	got, err := testSeat.AddSeat(ctx, &NewSeat)
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := &pb.Seat{
 		BookingId:  1,
 		SeatNumber: 2,

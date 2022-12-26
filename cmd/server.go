@@ -5,6 +5,7 @@ import (
 	"bms/database"
 	"bms/model"
 	server "bms/server"
+	"bms/utils"
 	"context"
 	"log"
 	"net"
@@ -25,10 +26,10 @@ func main() {
 
 	// db connection
 	db, err := model.StartDB()
-	model.CheckError(err)
+	utils.PanicError(err)
 
 	listen, err := net.Listen("tcp", port)
-	model.CheckError(err)
+	utils.PanicError(err)
 	defer db.Close()
 
 	//create new server

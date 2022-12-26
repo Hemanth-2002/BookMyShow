@@ -1,7 +1,7 @@
 package imdbRating
 
 import (
-	"bms/model"
+	"bms/utils"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -19,7 +19,7 @@ func GetImdbRating(movieName string) int {
 	req.Header.Add("X-RapidAPI-Host", "mdblist.p.rapidapi.com")
 
 	res, err := http.DefaultClient.Do(req)
-	model.CheckError(err)
+	utils.CheckError(err)
 	defer res.Body.Close()
 
 	body, _ := io.ReadAll(res.Body)

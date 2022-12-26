@@ -4,6 +4,7 @@ import (
 	pb "bms/bmsproto"
 	"bms/mocks"
 	model "bms/model"
+	"bms/utils"
 	"context"
 	"reflect"
 	"testing"
@@ -59,7 +60,7 @@ func TestAddMovie(t *testing.T) {
 	ctx := context.Background()
 	mockDb.EXPECT().AddMovie(MockMovie).Return(nil)
 	got, err := testMovie.AddMovie(ctx, &NewMovie)
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := &pb.Movie{
 		MovieName:   "Avatar",
 		Director:    "Cameron",
@@ -86,7 +87,7 @@ func TestGetMovies(t *testing.T) {
 	mockDb.EXPECT().GetMovies().Return([]model.Movie{MockMovie}, nil)
 	movies, err := testMovie.GetMovies(ctx, &pb.EmptyMovie{})
 	var got = movies.Movies
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := []*pb.Movie{}
 	expected = append(expected, &pb.Movie{
 		MovieName:   "Avatar",
@@ -113,7 +114,7 @@ func TestGetMovieByPreference(t *testing.T) {
 	mockDb.EXPECT().GetMovie(MockPreferredMovie).Return([]model.Movie{MockMovie}, nil)
 	movies, err := testMovie.GetMovieByPreference(ctx, &PreferredMovie)
 	var got = movies.Movies
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := []*pb.Movie{}
 	expected = append(expected, &pb.Movie{
 		MovieName:   "Avatar",
@@ -143,7 +144,7 @@ func TestUpdateMovieStatus(t *testing.T) {
 	MockMovieUpdate.Id = 1
 	got, err := testMovie.UpdateMovieStatus(ctx, &MockMovieUpdate)
 
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := &pb.Movie{
 		Status: "Active",
 	}

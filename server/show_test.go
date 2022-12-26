@@ -4,6 +4,7 @@ import (
 	pb "bms/bmsproto"
 	"bms/mocks"
 	model "bms/model"
+	"bms/utils"
 	"context"
 	"reflect"
 	"testing"
@@ -37,7 +38,7 @@ func TestUpdateShowDetails(t *testing.T) {
 	mockDb.EXPECT().UpdateShow(UpdateShow).Return(nil)
 	MockUpdateShow.Id = 1
 	got, err := testShow.UpdateShowDetails(ctx, &MockUpdateShow)
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := &pb.Show{
 		MovieId: 2,
 	}
@@ -57,7 +58,7 @@ func TestGetListOfShowsByTheatre(t *testing.T) {
 	mockDb.EXPECT().GetShow(TheatreId).Return([]model.Show{MockShow}, nil)
 	shows, err := testShow.GetListOfShowsByTheatre(ctx, &NewTheatre)
 	got := shows.Shows
-	model.CheckError(err)
+	utils.CheckError(err)
 	expected := []*pb.Show{}
 	expected = append(expected, &pb.Show{
 		Date:      "5-3-2022",
