@@ -3,8 +3,8 @@ package server
 import (
 	pb "bms/bmsproto"
 	model "bms/model"
+	"bms/utils"
 	"context"
-	"fmt"
 	"log"
 )
 
@@ -17,11 +17,11 @@ func (s *BmsServer) AddBooking(ctx context.Context, in *pb.NewBooking) (*pb.Book
 		Amount: int(in.GetAmount()),
 	}
 	err := s.Db.AddBooking(newBooking)
-	CheckCall(err)
+	utils.CheckCall(err)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.Booking{UserId: in.GetUserId(), ShowId: in.GetShowId(), Amount: in.GetAmount(), Id: uint64(newBooking.ID)}, nil
+	return &pb.Booking{UserId: uint64(newBooking.UserID), ShowId: uint64(newBooking.ShowID), Amount: uint64(newBooking.Amount), Id: uint64(newBooking.ID)}, nil
 }
 
 // function to get list of bookings by user
@@ -30,7 +30,7 @@ func (s *BmsServer) GetListOfBookingsByUser(ctx context.Context, in *pb.User) (*
 	AllBookings := []*pb.Booking{}
 	UserId := int(in.GetId())
 	Bookings, err := s.Db.GetBookings(UserId)
-	CheckCall(err)
+	utils.CheckCall(err)
 	if err != nil {
 		return nil, err
 	}
@@ -49,15 +49,9 @@ func (s *BmsServer) CancelBooking(ctx context.Context, in *pb.Booking) (*pb.Book
 	log.Printf("cancel booking called")
 	BookingId := in.Id
 	err := s.Db.CancelBooking(int(BookingId))
-	CheckCall(err)
+	utils.CheckCall(err)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.Booking{Id: in.GetId()}, nil
-}
-
-func CheckCall(err error) {
-	if err != nil {
-		fmt.Println("call unsuccesfull")
-	}
+	return &pb.Booking{Id: BookingId}, nil
 }

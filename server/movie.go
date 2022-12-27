@@ -4,6 +4,7 @@ import (
 	pb "bms/bmsproto"
 	imdb "bms/imdbRating"
 	"bms/model"
+	"bms/utils"
 	"context"
 	"log"
 )
@@ -25,31 +26,31 @@ func (s *BmsServer) AddMovie(ctx context.Context, in *pb.NewMovie) (*pb.Movie, e
 		newMovie.Rating = imdb.GetImdbRating(in.GetMovieName())
 		s.Db.AddMovie(newMovie)
 		return &pb.Movie{
-			MovieName:   in.GetMovieName(),
-			Director:    in.GetDirector(),
-			Description: in.GetDescription(),
-			Rating:      uint64(imdb.GetImdbRating(in.GetMovieName())),
-			Language:    in.GetLanguage(),
-			Genre:       in.GetGenre(),
-			ReleaseDate: in.GetReleaseDate(),
-			Status:      in.GetStatus(),
+			MovieName:   newMovie.MovieName,
+			Director:    newMovie.Director,
+			Description: newMovie.Description,
+			Rating:      uint64(imdb.GetImdbRating(newMovie.MovieName)),
+			Language:    newMovie.Language,
+			Genre:       newMovie.Genre,
+			ReleaseDate: newMovie.ReleaseDate,
+			Status:      newMovie.Status,
 			Id:          uint64(newMovie.ID)}, nil
 	} else {
 		newMovie.Rating = int(in.GetRating())
 		err := s.Db.AddMovie(newMovie)
-		CheckCall(err)
+		utils.CheckCall(err)
 		if err != nil {
 			return nil, err
 		}
 		return &pb.Movie{
-			MovieName:   in.GetMovieName(),
-			Director:    in.GetDirector(),
-			Description: in.GetDescription(),
-			Rating:      in.Rating,
-			Language:    in.GetLanguage(),
-			Genre:       in.GetGenre(),
-			ReleaseDate: in.GetReleaseDate(),
-			Status:      in.GetStatus(),
+			MovieName:   newMovie.MovieName,
+			Director:    newMovie.Director,
+			Description: newMovie.Description,
+			Rating:      uint64(newMovie.Rating),
+			Language:    newMovie.Language,
+			Genre:       newMovie.Genre,
+			ReleaseDate: newMovie.ReleaseDate,
+			Status:      newMovie.Status,
 			Id:          uint64(newMovie.ID)}, nil
 	}
 }
@@ -59,7 +60,7 @@ func (s *BmsServer) GetMovies(ctx context.Context, in *pb.EmptyMovie) (*pb.Movie
 	log.Printf("Getting employees called")
 	AllMovies := []*pb.Movie{}
 	Movies, err := s.Db.GetMovies()
-	CheckCall(err)
+	utils.CheckCall(err)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +88,7 @@ func (s *BmsServer) GetMovieByPreference(ctx context.Context, in *pb.Movie) (*pb
 	genre := in.GetGenre()
 	movie := model.Movie{Language: language, Rating: int(rating), Genre: genre}
 	Movies, err := s.Db.GetMovie(movie)
-	CheckCall(err)
+	utils.CheckCall(err)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +115,7 @@ func (s *BmsServer) UpdateMovieStatus(ctx context.Context, in *pb.Movie) (*pb.Mo
 	}
 	updatedStatus.ID = uint(in.Id)
 	err := s.Db.UpdateMovie(updatedStatus)
-	CheckCall(err)
+	utils.CheckCall(err)
 	if err != nil {
 		return nil, err
 	}

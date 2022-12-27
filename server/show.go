@@ -3,6 +3,7 @@ package server
 import (
 	pb "bms/bmsproto"
 	model "bms/model"
+	"bms/utils"
 	"context"
 	"log"
 )
@@ -13,7 +14,7 @@ func (s *BmsServer) GetListOfShowsByTheatre(ctx context.Context, in *pb.Theatre)
 	AllShows := []*pb.Show{}
 	TheatreId := in.GetTheatreId()
 	Shows, err := s.Db.GetShow(int(TheatreId))
-	CheckCall(err)
+	utils.CheckCall(err)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +38,7 @@ func (s *BmsServer) UpdateShowDetails(ctx context.Context, in *pb.Show) (*pb.Sho
 	}
 	Show.ID = uint(in.Id)
 	err := s.Db.UpdateShow(Show)
-	CheckCall(err)
+	utils.CheckCall(err)
 	if err != nil {
 		return nil, err
 	}

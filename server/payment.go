@@ -23,7 +23,7 @@ func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Paym
 		UserID:           int(in.GetUserId()),
 	}
 	user, err := s.Db.AddPayment(newPayment)
-	CheckCall(err)
+	utils.CheckCall(err)
 	if err != nil {
 		return nil, err
 	}
@@ -34,5 +34,5 @@ func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Paym
 		mail.Mail(jsonInfo)
 	}
 
-	return &pb.Payment{Amount: in.GetAmount(), DiscountCouponId: in.GetDiscountCouponId(), Mode: in.GetMode(), Status: in.GetStatus(), Id: uint64(newPayment.ID)}, nil
+	return &pb.Payment{Amount: uint64(newPayment.Amount), DiscountCouponId: uint64(newPayment.DiscountCouponID), Mode: newPayment.Mode, Status: newPayment.Status, Id: uint64(newPayment.ID)}, nil
 }

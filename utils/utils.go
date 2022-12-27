@@ -20,6 +20,12 @@ func CheckError(err error) {
 	}
 }
 
+func CheckCall(err error) {
+	if err != nil {
+		fmt.Println("call unsuccesfull")
+	}
+}
+
 func LoadEnv() {
 	envErr := godotenv.Load(".env")
 	if envErr != nil {
