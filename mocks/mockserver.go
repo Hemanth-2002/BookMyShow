@@ -106,11 +106,12 @@ func (mr *MockDataBaseMockRecorder) CancelBooking(arg0 interface{}) *gomock.Call
 }
 
 // CreateUser mocks base method.
-func (m *MockDataBase) CreateUser(arg0 model.User) error {
+func (m *MockDataBase) CreateUser(arg0 model.User) (uint, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateUser", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(uint)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateUser indicates an expected call of CreateUser.

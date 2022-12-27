@@ -16,12 +16,12 @@ func (s *BmsServer) CreateUser(ctx context.Context, in *pb.NewUser) (*pb.User, e
 		Email:       in.GetEmail(),
 		PhoneNumber: in.GetPhoneNumber(),
 	}
-	err := s.Db.CreateUser(newUser)
+	userId, err := s.Db.CreateUser(newUser)
 	CheckCall(err)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.User{UserName: in.GetUserName(), Password: in.GetPassword(), Email: in.GetEmail(), PhoneNumber: in.GetPhoneNumber(), Id: uint64(newUser.ID)}, nil
+	return &pb.User{UserName: in.GetUserName(), Password: in.GetPassword(), Email: in.GetEmail(), PhoneNumber: in.GetPhoneNumber(), Id: uint64(userId)}, nil
 }
 
 // function to update user info on server

@@ -7,7 +7,7 @@ import (
 )
 
 type DataBase interface {
-	CreateUser(model.User) error
+	CreateUser(model.User) (uint, error)
 	UpdateUser(model.User) error
 	GetShow(int) ([]model.Show, error)
 	UpdateShow(model.Show) error
@@ -26,9 +26,9 @@ type DBClient struct {
 	Db *gorm.DB
 }
 
-func (db DBClient) CreateUser(user model.User) error {
+func (db DBClient) CreateUser(user model.User) (uint, error) {
 	DB := db.Db.Save(&user)
-	return DB.Error
+	return user.ID, DB.Error
 }
 
 func (db DBClient) UpdateUser(user model.User) error {
