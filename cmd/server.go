@@ -6,6 +6,7 @@ import (
 	"bms/model"
 	"bms/server"
 	"bms/utils"
+	"fmt"
 	"log"
 	"net"
 	"time"
@@ -41,6 +42,7 @@ func runGRPCServer(
 func main() {
 
 	// db connection
+	fmt.Println("inside main")
 	db, err := model.StartDB()
 	utils.PanicError(err)
 
