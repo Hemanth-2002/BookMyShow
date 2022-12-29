@@ -2,7 +2,7 @@ package model
 
 import (
 	"bms/utils"
-	"flag"
+	"fmt"
 	"os"
 
 	"github.com/jinzhu/gorm"
@@ -13,10 +13,8 @@ func StartDB() (*gorm.DB, error) {
 
 	utils.LoadEnv() // To load .env file
 
-	db_user := flag.String("user", "postgres", "database user")
-	db_password := os.Getenv("db_password")
-	db_name := os.Getenv("db_name")
-	conn := "user=" + *db_user + " password=" + db_password + " dbname=" + db_name + " sslmode=disable"
+	conn := os.Getenv("dbConnect")
+	fmt.Println(conn)
 	db, err := gorm.Open("postgres", conn)
 	utils.PanicError(err)
 
