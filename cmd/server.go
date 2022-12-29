@@ -4,22 +4,38 @@ import (
 	pb "bms/bmsproto"
 	"bms/database"
 	"bms/model"
-	server "bms/server"
+	"bms/server"
 	"bms/utils"
-	"context"
 	"log"
 	"net"
+	"time"
 
+	"github.com/jinzhu/gorm"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 const (
-	port = ":50051" // choosing port number
+	port          = ":50051" // choosing port number
+	secretKey     = "secret"
+	tokenDuration = 15 * time.Minute
 )
 
-func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
-	log.Println("Unary Interceptor called: ", info.FullMethod)
-	return handler(ctx, req)
+func runGRPCServer(
+	jwtManager *server.JWTManager,
+	listener net.Listener,
+	db *gorm.DB,
+) error {
+	interceptor := server.NewAuthInterceptor(jwtManager)
+
+	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(interceptor.Unary()))
+	pb.RegisterBmsDatabaseCrudServer(grpcServer, &server.BmsServer{
+		Db: database.DBClient{Db: db},
+	})
+
+	reflection.Register(grpcServer)
+
+	return grpcServer.Serve(listener)
 }
 
 func main() {
@@ -32,18 +48,16 @@ func main() {
 	utils.PanicError(err)
 	defer db.Close()
 
-	//create new server
-	new_server := grpc.NewServer(
-		grpc.UnaryInterceptor(unaryInterceptor),
-	)
-
-	pb.RegisterBmsDatabaseCrudServer(new_server, &server.BmsServer{
-		Db: database.DBClient{Db: db},
-	})
-
 	log.Printf("Using port no %v", listen.Addr())
 
-	if err := new_server.Serve(listen); err != nil {
-		log.Fatal(err.Error())
+	if err != nil {
+		log.Fatal("cannot seed users: ", err)
 	}
+
+	jwtManager := server.NewJWTManager(secretKey, tokenDuration)
+
+	//create new server
+	err = runGRPCServer(jwtManager, listen, db)
+	utils.CheckError(err)
+
 }

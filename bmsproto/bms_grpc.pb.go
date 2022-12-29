@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BmsDatabaseCrudClient interface {
 	CreateUser(ctx context.Context, in *NewUser, opts ...grpc.CallOption) (*User, error)
+	CreateToken(ctx context.Context, in *NewUser, opts ...grpc.CallOption) (*Token, error)
 	AddMovie(ctx context.Context, in *NewMovie, opts ...grpc.CallOption) (*Movie, error)
 	AddBooking(ctx context.Context, in *NewBooking, opts ...grpc.CallOption) (*Booking, error)
 	AddPayment(ctx context.Context, in *NewPayment, opts ...grpc.CallOption) (*Payment, error)
@@ -48,6 +49,15 @@ func NewBmsDatabaseCrudClient(cc grpc.ClientConnInterface) BmsDatabaseCrudClient
 func (c *bmsDatabaseCrudClient) CreateUser(ctx context.Context, in *NewUser, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
 	err := c.cc.Invoke(ctx, "/bms.BmsDatabaseCrud/CreateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bmsDatabaseCrudClient) CreateToken(ctx context.Context, in *NewUser, opts ...grpc.CallOption) (*Token, error) {
+	out := new(Token)
+	err := c.cc.Invoke(ctx, "/bms.BmsDatabaseCrud/CreateToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -167,6 +177,7 @@ func (c *bmsDatabaseCrudClient) AddSeat(ctx context.Context, in *NewSeat, opts .
 // for forward compatibility
 type BmsDatabaseCrudServer interface {
 	CreateUser(context.Context, *NewUser) (*User, error)
+	CreateToken(context.Context, *NewUser) (*Token, error)
 	AddMovie(context.Context, *NewMovie) (*Movie, error)
 	AddBooking(context.Context, *NewBooking) (*Booking, error)
 	AddPayment(context.Context, *NewPayment) (*Payment, error)
@@ -188,6 +199,9 @@ type UnimplementedBmsDatabaseCrudServer struct {
 
 func (UnimplementedBmsDatabaseCrudServer) CreateUser(context.Context, *NewUser) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
+}
+func (UnimplementedBmsDatabaseCrudServer) CreateToken(context.Context, *NewUser) (*Token, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateToken not implemented")
 }
 func (UnimplementedBmsDatabaseCrudServer) AddMovie(context.Context, *NewMovie) (*Movie, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddMovie not implemented")
@@ -252,6 +266,24 @@ func _BmsDatabaseCrud_CreateUser_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BmsDatabaseCrudServer).CreateUser(ctx, req.(*NewUser))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BmsDatabaseCrud_CreateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NewUser)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BmsDatabaseCrudServer).CreateToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/bms.BmsDatabaseCrud/CreateToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BmsDatabaseCrudServer).CreateToken(ctx, req.(*NewUser))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -482,6 +514,10 @@ var BmsDatabaseCrud_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateUser",
 			Handler:    _BmsDatabaseCrud_CreateUser_Handler,
+		},
+		{
+			MethodName: "CreateToken",
+			Handler:    _BmsDatabaseCrud_CreateToken_Handler,
 		},
 		{
 			MethodName: "AddMovie",

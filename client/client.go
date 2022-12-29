@@ -28,11 +28,15 @@ func main() {
 	defer cancel()
 
 	//creating new user
-	new_user, err := client.CreateUser(ctx, &pb.NewUser{UserName: "PST", Password: "123", Email: "pst@bc.in", PhoneNumber: "9123"})
+	newUser := pb.NewUser{UserName: "PST", Password: "123", Email: "pst@bc.in", PhoneNumber: "9123"}
+	new_user, err := client.CreateUser(ctx, &newUser)
+	utils.CheckError(err)
+	token, err := client.CreateToken(ctx, &newUser)
+
 	utils.CheckError(err)
 
 	log.Printf("User Name: %v, Password: %v, Email: %v, PhoneNumber : %v", new_user.GetUserName(), new_user.GetPassword(), new_user.GetEmail(), new_user.GetPhoneNumber())
-
+	log.Printf("User Token: %v", token)
 	// creating a new movie
 	new_movie, err := client.AddMovie(ctx, &pb.NewMovie{
 		MovieName:   "Avatar",

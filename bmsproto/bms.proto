@@ -6,6 +6,7 @@ package bms;
 
 service BmsDatabaseCrud{
     rpc CreateUser(NewUser) returns (User){}
+    rpc CreateToken(NewUser) returns (Token){}
     rpc AddMovie(NewMovie) returns (Movie){}
     rpc AddBooking(NewBooking) returns (Booking){}
     rpc AddPayment(NewPayment) returns (Payment){}
@@ -19,7 +20,13 @@ service BmsDatabaseCrud{
     rpc CancelBooking(Booking) returns (Booking){}
     rpc AddSeat(NewSeat) returns(Seat){}
 }
- 
+
+//  Token
+
+message Token {
+    string token = 1;
+}
+
 // User
 
 message User {
