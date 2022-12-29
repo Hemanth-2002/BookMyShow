@@ -57,7 +57,7 @@ func main() {
 	}
 
 	jwtManager := server.NewJWTManager(secretKey, tokenDuration)
-
+	fmt.Println("jwt manager working")
 	//create new server
 	err = runGRPCServer(jwtManager, listen, db)
 	utils.CheckError(err)
