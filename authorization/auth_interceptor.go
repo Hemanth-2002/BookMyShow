@@ -1,4 +1,4 @@
-package server
+package authorization
 
 import (
 	"context"

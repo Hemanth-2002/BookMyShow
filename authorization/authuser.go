@@ -1,4 +1,4 @@
-package server
+package authorization
 
 // User contains user's information
 type User struct {

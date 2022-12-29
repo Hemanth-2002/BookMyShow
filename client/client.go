@@ -4,29 +4,39 @@ import (
 	pb "bms/bmsproto"
 	"bms/utils"
 	"context"
+	"crypto/tls"
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials"
 )
 
 const (
-	address = "localhost:50051" // port address for client
+	address = "bms-vog9.onrender.com:50051" // port address for client
 )
 
 func main() {
-
-	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(5*time.Second))
+	defer cancel()
+	type credentialsl struct {
+		credentials.TransportCredentials
+		once  sync.Once
+		state tls.ConnectionState
+	}
+	creds := &credentialsl{TransportCredentials: credentials.NewTLS(&tls.Config{})}
+	conn, err := grpc.DialContext(ctx, address,
+		grpc.WithTransportCredentials(creds),
+		grpc.WithBlock(),
+		grpc.WithDefaultCallOptions(grpc.WaitForReady(true)))
+	fmt.Println("unable to dial")
 	utils.CheckError(err)
 	defer conn.Close()
+	fmt.Println("connected")
 
 	client := pb.NewBmsDatabaseCrudClient(conn)
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-
 	//creating new user
 	newUser := pb.NewUser{UserName: "PST", Password: "123", Email: "pst@bc.in", PhoneNumber: "9123"}
 	new_user, err := client.CreateUser(ctx, &newUser)
