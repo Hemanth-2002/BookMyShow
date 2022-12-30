@@ -40,10 +40,12 @@ func TestCreateUser(t *testing.T) {
 	mockDb := mocks.NewMockDataBase(controller)
 	testUser := BmsServer{Db: mockDb}
 	ctx := context.Background()
-	mockDb.EXPECT().CreateUser(mockUser).Return(nil)
+	id := uint(1)
+	mockDb.EXPECT().CreateUser(mockUser).Return(id, nil)
 	got, err := testUser.CreateUser(ctx, &UserNew)
 	utils.CheckError(err)
 	expected := &pb.User{
+		Id:          1,
 		UserName:    "KHK",
 		Password:    "123",
 		Email:       "hemanth.kakumanu@beautifulcode.in",
