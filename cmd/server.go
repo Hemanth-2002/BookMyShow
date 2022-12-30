@@ -18,8 +18,9 @@ import (
 )
 
 const (
-	port          = ":50051" // choosing port number
+	// port          = ":50051" // choosing port number
 	secretKey     = "secret"
+	port          = ":8080"
 	tokenDuration = 15 * time.Minute
 )
 
