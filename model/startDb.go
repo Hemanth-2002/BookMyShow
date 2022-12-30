@@ -30,5 +30,7 @@ func StartDB() (*gorm.DB, error) {
 	db.Model(&Show{}).AddForeignKey("movie_id", "movies(id)", "CASCADE", "RESTRICT")
 	db.Model(&Show{}).AddForeignKey("theatre_id", "theatres(id)", "CASCADE", "RESTRICT")
 
+	initializeDb(db) // initialize db with sample data
+
 	return db, nil
 }
