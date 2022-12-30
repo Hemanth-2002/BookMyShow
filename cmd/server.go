@@ -53,14 +53,11 @@ func main() {
 
 	log.Printf("Using port no %v", listen.Addr())
 
-	if err != nil {
-		log.Fatal("cannot seed users: ", err)
-	}
-
 	jwtManager := auth.NewJWTManager(secretKey, tokenDuration)
 	fmt.Println("jwt manager working")
 	//create new server
 	err = runGRPCServer(jwtManager, listen, db)
+	log.Print(err)
 	utils.CheckError(err)
 
 }
