@@ -1,4 +1,4 @@
-# fly.toml file generated for bookmyshow on 2022-12-30T11:07:43+05:30
+# fly.toml file generated for bookmyshow on 2022-12-30T17:18:51+05:30
 
 app = "bookmyshow"
 kill_signal = "SIGINT"
@@ -10,7 +10,7 @@ processes = []
   buildpacks = ["gcr.io/paketo-buildpacks/go"]
 
 [env]
-  PORT = "54321"
+  PORT = "8080"
 
 [experimental]
   allowed_public_ports = []
@@ -30,10 +30,9 @@ processes = []
   [[services.ports]]
     handlers = ["tls"]
     port = 443
-
-  [services.ports.tls_options]
+    [services.ports.tls_options]
       alpn = ["h2"]
-      
+
   [[services.tcp_checks]]
     grace_period = "1s"
     interval = "15s"
