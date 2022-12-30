@@ -7,7 +7,6 @@ import (
 	"bms/model"
 	"bms/server"
 	"bms/utils"
-	"fmt"
 	"log"
 	"net"
 	"time"
@@ -18,9 +17,8 @@ import (
 )
 
 const (
-	// port          = ":50051" // choosing port number
 	secretKey     = "secret"
-	port          = ":8080"
+	port          = ":54321"
 	tokenDuration = 15 * time.Minute
 )
 
@@ -44,7 +42,6 @@ func runGRPCServer(
 func main() {
 
 	// db connection
-	fmt.Println("inside main")
 	db, err := model.StartDB()
 	utils.PanicError(err)
 
@@ -55,7 +52,7 @@ func main() {
 	log.Printf("Using port no %v", listen.Addr())
 
 	jwtManager := auth.NewJWTManager(secretKey, tokenDuration)
-	fmt.Println("jwt manager working")
+
 	//create new server
 	err = runGRPCServer(jwtManager, listen, db)
 	log.Print(err)

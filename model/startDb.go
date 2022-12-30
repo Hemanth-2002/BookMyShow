@@ -2,7 +2,6 @@ package model
 
 import (
 	"bms/utils"
-	"fmt"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
@@ -11,10 +10,8 @@ import (
 func StartDB() (*gorm.DB, error) {
 
 	// utils.LoadEnv() // To load .env file
-	fmt.Println("inside startDB")
 
 	conn := "postgres://bookmyshow_user:DGigHf98rBTxB3pztnuYhbsb9hqeZpKz@dpg-cemk2dg2i3molpj4cjqg-a.oregon-postgres.render.com/bookmyshow"
-	fmt.Println(conn)
 	db, err := gorm.Open("postgres", conn)
 	utils.PanicError(err)
 

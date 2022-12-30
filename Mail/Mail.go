@@ -3,7 +3,6 @@ package Mail
 import (
 	"bms/utils"
 	"net/http"
-	"os"
 	"strings"
 )
 
@@ -14,9 +13,9 @@ func Mail(jsonInfo string) {
 	payload := strings.NewReader(jsonInfo)
 	req, _ := http.NewRequest("POST", url, payload)
 
-	key := os.Getenv("X-RapidAPI-Key")
+	// key := os.Getenv("X-RapidAPI-Key")
 	req.Header.Add("content-type", "application/json")
-	req.Header.Add("X-RapidAPI-Key", key)
+	req.Header.Add("X-RapidAPI-Key", "81087b3865mshb8974e3c74f5b9dp1999ffjsn823050f51b45")
 	req.Header.Add("X-RapidAPI-Host", "rapidprod-sendgrid-v1.p.rapidapi.com")
 
 	res, err := http.DefaultClient.Do(req)
