@@ -14,7 +14,7 @@ func Mail(jsonInfo string) {
 	payload := strings.NewReader(jsonInfo)
 	req, _ := http.NewRequest("POST", url, payload)
 
-	key := os.Getenv("X-RapidAPI-Key")
+	key := os.Getenv("RapidAPI_Key_Mail")
 	req.Header.Add("content-type", "application/json")
 	req.Header.Add("X-RapidAPI-Key", key)
 	req.Header.Add("X-RapidAPI-Host", "rapidprod-sendgrid-v1.p.rapidapi.com")

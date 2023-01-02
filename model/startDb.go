@@ -11,7 +11,7 @@ import (
 func StartDB() (*gorm.DB, error) {
 
 	utils.LoadEnv() // To load .env file
-	conn := os.Getenv("dbConnect")
+	conn := os.Getenv("DB_Connect")
 	db, err := gorm.Open("postgres", conn)
 	utils.PanicError(err)
 
