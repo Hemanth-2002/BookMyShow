@@ -4,6 +4,7 @@ import (
 	mail "bms/Mail"
 	pb "bms/bmsproto"
 	model "bms/model"
+	"bms/utils"
 	"context"
 	"fmt"
 	"log"
@@ -13,7 +14,7 @@ import (
 func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Payment, error) {
 	log.Printf("creating new payment called")
 	status := in.GetStatus()
-	NewPayment := model.Payment{
+	newPayment := model.Payment{
 		BookingID:        int(in.GetBookingId()),
 		Amount:           int(in.GetAmount()),
 		DiscountCouponID: int(in.GetDiscountCouponId()),
@@ -21,13 +22,17 @@ func (s *BmsServer) AddPayment(ctx context.Context, in *pb.NewPayment) (*pb.Paym
 		Status:           status,
 		UserID:           int(in.GetUserId()),
 	}
-	s.Db.Save(&NewPayment)
-	user := &model.User{}
-	s.Db.Where("id = ?", in.GetUserId()).Find(&user)
-
-	if status {
-		mail.Mail(fmt.Sprint(in.GetAmount()), user.Email, fmt.Sprint(in.GetDiscountCouponId()), in.GetMode())
+	user, err := s.Db.AddPayment(newPayment)
+	utils.CheckCall(err)
+	if err != nil {
+		return nil, err
 	}
 
-	return &pb.Payment{Amount: in.GetAmount(), DiscountCouponId: in.GetDiscountCouponId(), Mode: in.GetMode(), Status: in.GetStatus(), Id: uint64(NewPayment.ID)}, nil
+	if status {
+		sender := "hemanth.kakumanu@beautifulcode.in"
+		jsonInfo := utils.MailInfo(fmt.Sprint(sender), fmt.Sprint(in.GetAmount()), user.Email, fmt.Sprint(in.GetDiscountCouponId()), in.GetMode())
+		mail.Mail(jsonInfo)
+	}
+
+	return &pb.Payment{Amount: uint64(newPayment.Amount), DiscountCouponId: uint64(newPayment.DiscountCouponID), Mode: newPayment.Mode, Status: newPayment.Status, Id: uint64(newPayment.ID)}, nil
 }

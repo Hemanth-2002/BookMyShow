@@ -3,6 +3,7 @@ package server
 import (
 	pb "bms/bmsproto"
 	model "bms/model"
+	"bms/utils"
 	"context"
 	"log"
 )
@@ -14,6 +15,10 @@ func (s *BmsServer) AddSeat(ctx context.Context, in *pb.NewSeat) (*pb.Seat, erro
 		BookingID:  int(in.GetBookingId()),
 		SeatNumber: int(in.GetSeatNumber()),
 	}
-	s.Db.Save(&newSeat)
-	return &pb.Seat{BookingId: in.GetBookingId(), SeatNumber: in.GetSeatNumber(), Id: uint64(newSeat.ID)}, nil
+	err := s.Db.AddSeat(newSeat)
+	utils.CheckCall(err)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.Seat{BookingId: uint64(newSeat.BookingID), SeatNumber: uint64(newSeat.SeatNumber), Id: uint64(newSeat.ID)}, nil
 }

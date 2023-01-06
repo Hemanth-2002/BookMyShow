@@ -1,24 +1,25 @@
 package imdbRating
 
 import (
-	"bms/model"
+	"bms/utils"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 )
 
-func ImdbRating(movieName string) int {
+func GetImdbRating(movieName string) int {
 
 	url := fmt.Sprintf("https://mdblist.p.rapidapi.com/?s=%s&m=movie&l=1", movieName)
 
 	req, _ := http.NewRequest("GET", url, nil)
-
-	req.Header.Add("X-RapidAPI-Key", "285bd11398msh3a5f0f9c659453fp128fd7jsn73c2bb09d864")
+	key := os.Getenv("RapidAPI_Key_Rating")
+	req.Header.Add("X-RapidAPI-Key", key)
 	req.Header.Add("X-RapidAPI-Host", "mdblist.p.rapidapi.com")
 
 	res, err := http.DefaultClient.Do(req)
-	model.CheckError(err)
+	utils.CheckError(err)
 	defer res.Body.Close()
 
 	body, _ := io.ReadAll(res.Body)
