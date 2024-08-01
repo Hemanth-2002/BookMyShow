@@ -5,11 +5,14 @@ import "github.com/jinzhu/gorm"
 
 type User struct {
 	gorm.Model
-	UserName    string
-	Password    string
-	Email       string
-	PhoneNumber string
-	Booking     []Booking
+	UserName          string
+	Password          string
+	Email             string
+	PhoneNumber       string
+	GoogleID          string
+	GoogleEmail       string
+	GoogleProfilePic  string
+	Booking           []Booking
 }
 
 type Booking struct {
